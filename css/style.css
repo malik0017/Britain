@@ -1,0 +1,133 @@
+/*  */
+@media (min-width: 1200px){
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 100%;
+    }
+    }
+
+    .tr{
+        font-size: 500px;
+    }
+   
+    .layout-top-nav .wrapper .main-header .brand-image {
+        margin-top: -0.5rem;
+        margin-right: 10px;
+        height: 33px;
+    }
+    .form-controll-style{
+        padding-bottom: 35px !important;
+    }
+    .btn-custom-style{
+        width: 70px!important;
+    }
+    .navbar-light .navbar-brand {
+        color: rgb(255 255 255);
+    }
+    /* style for color scheme */
+    .btn-warning{
+         background-color:#244f96; 
+        color: #ffffff;
+        border: #244f96;
+        
+    }
+    .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+        color: #ffd400;
+    }
+    .navbar-light .navbar-nav .nav-link {
+        color: #ffffff;
+    }
+    .btn-primaryy{
+        background-color: #0062cc;
+        color: #fff;
+    }
+    .btn-primaryy:hover {
+        color: #fff;
+        background-color: var(--yellow);
+        border-color: #0062cc;
+    }
+    .btn-warning:hover{
+        background-color:#054AA5;
+        color: #ffffff;
+        border: #054AA5;
+    }
+    .navbar-darkblue{
+        background-color:#244f96;
+        color: #ffffff;
+        border: #244f96;
+    }
+    .card-primary.card-outline {
+        border-top: 3px solid #CE3236;
+    }
+    .card-warning:not(.card-outline) > .card-header, .card-warning:not(.card-outline) > .card-header a {
+        background-color:#244f96;
+        color: #ffffff;
+        /* border: #244f96; */
+    }
+    /* .alert-success{
+        background-color:#78d3ff;
+        color: #ffffff;
+    } */
+    .btn-warning:not(:disabled):not(.disabled).active, .btn-warning:not(:disabled):not(.disabled):active, .show > .btn-warning.dropdown-toggle {
+        color: #ffffff;
+        background-color: #244f96;
+        border-color: #244f96;
+    }
+    .btn-warning:not(:disabled):not(.disabled).active, .btn-warning:not(:disabled):not(.disabled):active, .show > .btn-warning.dropdown-toggle {
+        color: #ffffff;
+        background-color: #244f96;
+        border-color: #244f96;
+    }
+    .select_height{
+        height: 38px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+    /* End style for color scheme */
+    .asterisk{
+        color:#CE3236;
+    }
+    .center1{
+        margin-top:20px;
+    }
+    .righttext{
+        text-align: right;
+    }
+    .btn1{
+        font-size: 30px;
+    }
+    .picright{
+        float:right;
+    }
+    .search_report {
+        width: 28%;
+        display: inline;
+        
+    }
+    .label-size{
+        font-size: 18px;
+    }
+    
+    .custom-switch .custom-control-label::before {
+        height: 25px;
+        width:50px;
+    }
+    
+    .custom-switch .custom-control-label::after {
+        top: calc(0.25rem + 6px);
+        left: calc(0.75rem + -36px);
+        width: calc(1rem - 0px);
+        height: calc(1rem - 4px);
+    }
+    .toggle-class.custom-control.custom-switch.activation-btn {
+        margin-top: -10px;
+    }
+    
+    @media (max-width: 500px) {
+      .custom-img-style {
+        width: 300px !important;
+      }
+    }
+
+    .card-body {
+        padding: 20px !important;
+    }
