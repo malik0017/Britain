@@ -2,7 +2,7 @@
 session_start();
 date_default_timezone_set('Asia/Karachi');
 include_once 'db-tables.php';
-error_reporting(0);
+error_reporting(-1);
 $cDateTime = date("Y-m-d H:i:s");
 
 $_SESSION['$cDateTime'] = date("Y-m-d H:i:s");
@@ -148,7 +148,7 @@ class config
     function singlev($table)
     {
         $sql = "select * from $table";
-        //echo"---". $sql;
+        // echo"---". $sql;
         $result = mysqli_query($this->link, $sql);
         $rs= mysqli_fetch_object($result);
         return $rs;
@@ -314,7 +314,7 @@ class config
         if ($where != '') $where = " WHERE $where";
         if ($orderby != '') $orderby = " ORDER BY $orderby";
         if ($limit != '') $limit = " LIMIT $limit";
-         "SELECT $fields FROM $table" . $where . $orderby . $limit;
+    "SELECT $fields FROM $table" . $where . $orderby . $limit;
         $recordSet =
             mysqli_query($this->link,
                 "SELECT $fields FROM $table" . $where . $orderby . $limit // Set the SELECT for the query
@@ -1817,6 +1817,155 @@ class config
             }
         }
     }
+    public function BasicSalary($id)
+    {
+       
+         $basic_salary = $this->singlev( STAFF ." WHERE id= $id " );
+        return  $basic_salary->basic_salary;
+    }
+    public function LeaveAmount($staff_id,$number_leaves)
+    {
+       
+         $basic_salary = $this->singlev( STAFF ." WHERE id= $staff_id " );
+
+         
+         
+            $oneday_salary=$basic_salary->basic_salary*12/365;
+            $amount=$oneday_salary*$number_leaves;
+            if($number_leaves==0){
+               return  $oneday_salary;
+             }
+             else{
+                return $amount;
+             }
+            
+    }
+    public function LunchAmount($staff_id)
+    {
+       
+         $staff_data = $this->singlev( STAFF ." WHERE id= $staff_id " );
+         
+         if($staff_data->confirmation_date!=null){
+            
+            $employe_data = $this->singlev( EMPLOYETYE ." WHERE id= $staff_data->employel_type " );
+            $lunch=$employe_data->lunch_allowance;
+            return $lunch;
+         }
+    }
+    public function KidsStaff($staff_id)
+    {
+       
+         $data = $this->countme( Student ." WHERE EmployeeID= $staff_id " );
+           return $data;
+         
+        
+    }
+    public function IncomeTax($grosssalary)
+    {
+        
+         $employe_data = $this->singlev( INCOMETAX ." WHERE $grosssalary  BETWEEN   range_to AND range_from" );
+       
+        if($employe_data->amount=='0' && $employe_data->percentage== '0'){
+                return 0;
+        }else if($employe_data->amount=='0' && $employe_data->percentage > '0'){
+                $value=round($grosssalary*$employe_data->percentage/100);
+                return $value;
+        }else{
+            $value=$employe_data->amount + round($grosssalary*$employe_data->percentage/100);
+                return $value;
+
+        }
+         
+        
+    } 
+    public function ProvidentFunds($id)
+    {
+        $staff_data = $this->singlev( STAFF ." WHERE id= $id " );
+         if($staff_data->confirmation_date!=null){
+            $p_fund=round($staff_data->basic_salary*0.075);
+            return $p_fund;
+         }
+      
+    }
+    public function securityCheck($id)
+    {
+        $arr=array();
+        $securitydata=$this->QueryRun("SELECT * FROM " .EMPSECURITY. " where emp_id=  ".$id."  AND is_completed = 0");
+        $total=0;
+        if($securitydata !== null){
+        if(count($securitydata)>0)
+        {
+            foreach($securitydata as $key =>$data){
+                $amount=$data->amount/$data->installment_no;
+                $total=$total + $amount;
+                $arr[$data->id]=$amount;
+                $arr['total']=$total;
+                // $arr[$data->id]=$data->id;
+                // $arr[1]=$id;
+            }
+            // print_r($arr);
+            // exit;
+            return $arr;
+
+        }else{
+            return false;
+        }
+    }else{
+        return $arr;
+    }
+
+        // $paid_security=$this->QueryRun("SELECT Sum(amount) as paid_security FROM " .EMPSECURITY. " WHERE emp_id=".$id." ");
+        // $staff_data = $this->BasicSalary($id);
+        // if($taff_data==$paid_security){
+        //     return 0;
+        // }else{
+        //     // echo "------===";
+        //     $lastrow=$this->QueryRun("SELECT * FROM " .EMPSECURITY. " ORDER BY id DESC
+        //     LIMIT 1");
+        //     return $lastrow[0]->amount;
+
+        // }
+        
+         
+      
+    }
+    public function LoansCheck($id)
+    {
+        $total=0;
+        $loandata=$this->QueryRun("SELECT * FROM " .EMPLOANS. " where emp_id=  ".$id."  AND is_completed = 0");
+        if($loandata !== null){
+        if(count($loandata)>0)
+        {
+            foreach($loandata as $data){
+                $amount=$data->amount/$data->installment_no;
+                $total=$total + $amount;
+            }
+            
+            return $total;
+
+        }else{
+            return false;
+        }
+    }
+        // return $lastrow[0]->amount;
+
+
+        // $paid_security=$this->QueryRun("SELECT Sum(amount) as paid_security FROM " .EMPLOANS. " WHERE emp_id=".$id." ");
+        // $staff_data = $this->BasicSalary($id);
+        // if($taff_data==$paid_security){
+        //     return 0;
+        // }else{
+        //     // echo "------===";
+        //     $lastrow=$this->QueryRun("SELECT * FROM " .EMPLOANS. " ORDER BY id DESC
+        //     LIMIT 1");
+        //     return $lastrow[0]->amount;
+
+        
+        
+         
+      
+    }
+    
 }
 
 ?>

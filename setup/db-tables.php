@@ -38,4 +38,18 @@ define("FEEDEFAULTPACKAGEDETAIL", "fee_default_package_detail");
 define("FEEVOUCHER", "fee_voucher");
 define("FEEVOUCHERDETAIL", "fee-voucher-detail");
 
+define("STAFFSALARY", "staff_salary");
+
+define("SALARYFUNDS", "tbl_salary_funds");
+
+define("SALARYALLOWANCE", "salary_allowance");
+
+define("SALARYDEDUCT", "salary_deduction");
+
+define("EMPLOANS", "emp_loans");
+define("EMPSECURITY", "emp_security");
+define("INCOMETAX", "income_tax");
+define("ALLOWANCEDEDUCTION", "allowance_deduction");
+define("SALARYSECURITY", "salary_security");
+define("SALARYlOAN", "salary_loan");
 ?>
