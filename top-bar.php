@@ -73,7 +73,7 @@
            </li>
       <li class="nav-item dropdown">
             <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
-            class="nav-link">Staff</a>
+            class="nav-link">Staff1111</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow " style="left: 0px; right: inherit; background-color:rgb(36, 79, 150);">
             <li class="nav-item"><a href="staff-view" class="nav-link">Staff</a></li>
             <li class="nav-item"><a href="employel-level-view" class="nav-link">Employe level</a></li>
@@ -81,6 +81,8 @@
       <li class="nav-item"><a href="department-view" class="nav-link">Department</a></li>
       <li class="nav-item"><a href="salary-type-view" class="nav-link">Salary</a></li>
       <li class="nav-item"><a href="staff-confirmation.php" class="nav-link">Staff Confirmation</a></li>
+      <li class="nav-item"><a href="create_salary" class="nav-link">Create Salary</a></li>
+      <li class="nav-item"><a href="holiday_mark" class="nav-link">Holiday Marks</a></li>
             </ul>
            </li>
            <li class="nav-item"><a href="banks-view" class="nav-link">Banks</a></li>

@@ -83,7 +83,12 @@
       <li class="nav-item"><a href="employel-type-view" class="nav-link">Employe Type</a></li>
       <li class="nav-item"><a href="department-view" class="nav-link">Department</a></li>
       <li class="nav-item"><a href="salary-type-view" class="nav-link">Salary</a></li>
-      <li class="nav-item"><a href="staff-confirmation.php" class="nav-link">Staff Confirmation</a></li>
+      <li class="nav-item"><a href="staff-confirmation" class="nav-link">Staff Confirmation</a></li>
+      <li class="nav-item"><a href="letf_staff_ac_de" class="nav-link"> Staff Active & Deactive</a></li>
+      <li class="nav-item"><a href="create_salary" class="nav-link">Create Salary</a></li>
+      <li class="nav-item"><a href="holiday_mark" class="nav-link">Holiday Marks</a></li>
+      <li class="nav-item"><a href="increament_salary" class="nav-link">Increament Salary</a></li>
+      <li class="nav-item"><a href="loan_allocation" class="nav-link">Loan Allocation</a></li>
             </ul>
            </li>
            <li class="nav-item"><a href="banks-view" class="nav-link">Banks</a></li>

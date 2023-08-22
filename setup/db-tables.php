@@ -52,4 +52,6 @@ define("INCOMETAX", "income_tax");
 define("ALLOWANCEDEDUCTION", "allowance_deduction");
 define("SALARYSECURITY", "salary_security");
 define("SALARYlOAN", "salary_loan");
+define("HOLIDAYMARK", "holidays_mark");
+define("INREAMENTSALARY", "increatment_salary");
 ?>

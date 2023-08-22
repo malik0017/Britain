@@ -2,7 +2,7 @@
 session_start();
 date_default_timezone_set('Asia/Karachi');
 include_once 'db-tables.php';
-error_reporting(-1);
+error_reporting(0);
 $cDateTime = date("Y-m-d H:i:s");
 
 $_SESSION['$cDateTime'] = date("Y-m-d H:i:s");
@@ -43,7 +43,7 @@ class config
     function fetchall($table)
     {
         $sql = "select * from $table";
-        //  echo $sql;
+         // echo $sql;
         $result = mysqli_query($this->link, $sql);
         $arr = array();
         while ($rs = mysqli_fetch_object($result)) {
@@ -1820,13 +1820,13 @@ class config
     public function BasicSalary($id)
     {
        
-         $basic_salary = $this->singlev( STAFF ." WHERE id= $id " );
+         $basic_salary = $this->singlev( STAFF ." WHERE employel_id= $id " );
         return  $basic_salary->basic_salary;
     }
     public function LeaveAmount($staff_id,$number_leaves)
     {
        
-         $basic_salary = $this->singlev( STAFF ." WHERE id= $staff_id " );
+         $basic_salary = $this->singlev( STAFF ." WHERE employel_id= $staff_id " );
 
          
          
@@ -1842,15 +1842,18 @@ class config
     }
     public function LunchAmount($staff_id)
     {
-       
-         $staff_data = $this->singlev( STAFF ." WHERE id= $staff_id " );
+       $lunch=0;
+         $staff_data = $this->singlev( STAFF ." WHERE employel_id= $staff_id " );
          
          if($staff_data->confirmation_date!=null){
             
             $employe_data = $this->singlev( EMPLOYETYE ." WHERE id= $staff_data->employel_type " );
-            $lunch=$employe_data->lunch_allowance;
+            // $lunch=$employe_data->lunch_allowance;
+            $lunch=$staff_data->lunch_allowance;
+    
             return $lunch;
          }
+         else return $lunch;
     }
     public function KidsStaff($staff_id)
     {
@@ -1880,11 +1883,16 @@ class config
     } 
     public function ProvidentFunds($id)
     {
-        $staff_data = $this->singlev( STAFF ." WHERE id= $id " );
-         if($staff_data->confirmation_date!=null){
+        
+        $staff_data = $this->singlev( STAFF ." WHERE employel_id= $id " );
+       
+         if($staff_data->confirmation_date != null){
+            
             $p_fund=round($staff_data->basic_salary*0.075);
+            
             return $p_fund;
          }
+         return 0;
       
     }
     public function securityCheck($id)
@@ -1908,7 +1916,7 @@ class config
             return $arr;
 
         }else{
-            return false;
+            return 0;
         }
     }else{
         return $arr;
@@ -1932,9 +1940,10 @@ class config
     public function LoansCheck($id)
     {
         $total=0;
+       
         $loandata=$this->QueryRun("SELECT * FROM " .EMPLOANS. " where emp_id=  ".$id."  AND is_completed = 0");
         if($loandata !== null){
-        if(count($loandata)>0)
+        if(count($loandata)>0 )
         {
             foreach($loandata as $data){
                 $amount=$data->amount/$data->installment_no;
@@ -1946,7 +1955,7 @@ class config
         }else{
             return false;
         }
-    }
+        }
         // return $lastrow[0]->amount;
 
 
@@ -1964,6 +1973,30 @@ class config
         
          
       
+        }
+    public function SalaryCheCreate($mon,$year,$campus)
+    {
+        
+        $staff_salary_create=array();
+
+        $sql = "SELECT sl.*
+	FROM ".STAFFSALARY." as sl
+	INNER JOIN ".STAFF. " as s ON sl.emp_id = s.employel_id
+	WHERE s.campus = $campus AND s.IsActive = 1 AND s.IsLeft=0";
+	// echo $sql;
+	$staff_salary = $this->QueryRun($sql);
+
+
+
+        // $staff_salary= $this->fetchall(STAFFSALARY . " WHERE campus= $campus AND salary_month= $mon AND salary_year = $year");
+        // print_r($staff_salary);
+        foreach ($staff_salary as $key => $data) {
+            $staff_salary_create[$key]=$data->emp_id;
+        }
+        // print_r($staff_salary_create);
+        return $staff_salary_create;
+
+
     }
     
 }
