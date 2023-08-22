@@ -201,6 +201,14 @@ if (isset($_POST['load'])) {
 				$data_post = array( 'emp_id' => $data, 'leaves' =>$numberOfLeave ,'campus_id' =>$data->campus,'basic_salary' => $basic_salary,'net_salary' => $net_salary,'d_loan' => $advance,'d_leave_amount' => $leave_amount,'a_lunch' => $lunch_amount,'free_kids' => $staff_kids,'d_income_tax' => $income_tax,'d_security' => $security,'d_provident_funds' => $pfunds,'installment_no' => $installment_no,'user_id' => $_SESSION[ 'user_reg' ],'salary_month' => $salary_month,'salary_year' => $salary_year,'other_allowance' => $other,'created_at' => $_SESSION['cDate'],'updated_at' => $_SESSION['cDate']);
 
 				$recodes = $conf->insert( $data_post, STAFFSALARY );
+				$date=date("Y-m-d");
+				$description='Funds BY'.$data->employel_name.' Date '.$date.' amount is '.$pfunds;
+				$vno = $conf->VoucherNo();
+				$vno = 'PF'.$vno;
+				
+				
+
+				$conf->FundsEntry(PROVIDENTFUNDS,$description, $pfunds, $data, 'cr',0,1, $date, $vno);
 				
 				 
 	}
