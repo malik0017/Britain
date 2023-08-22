@@ -3,7 +3,7 @@
 if (isset($_POST['submit'])) {
     $staffId = $_POST['staff_id'];
     // Get form data
-echo $sql = "SELECT pf.*, s.employel_name 
+ $sql = "SELECT pf.*, s.employel_name 
 FROM ".PROVIDENTFUNDS." as pf
 INNER JOIN ".STAFF. " as s ON pf.customer_id = s.employel_id
 WHERE pf.customer_id = $staffId";
@@ -79,8 +79,8 @@ $campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
                             <th width="10%">Date</th>
                             <th width="10%">Voucher No</th>
                             <th width="30%">Description</th>
-                            <th width="13%" class="text-right">Debit</th>
-                            <th width="13%" class="text-right">Credit</th>
+                            <th width="13%" class="text-right">Deposit</th>
+                            <th width="13%" class="text-right">Withdraw</th>
                             <th width="13%" class="text-right">Current Balance</th>
                            
 

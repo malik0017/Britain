@@ -2,7 +2,7 @@
 session_start();
 date_default_timezone_set('Asia/Karachi');
 include_once 'db-tables.php';
-error_reporting(-1);
+error_reporting(0);
 $cDateTime = date("Y-m-d H:i:s");
 
 $_SESSION['$cDateTime'] = date("Y-m-d H:i:s");

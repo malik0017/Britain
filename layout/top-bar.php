@@ -89,6 +89,7 @@
       <li class="nav-item"><a href="holiday_mark" class="nav-link">Holiday Marks</a></li>
       <li class="nav-item"><a href="increament_salary" class="nav-link">Increament Salary</a></li>
       <li class="nav-item"><a href="loan_allocation" class="nav-link">Loan Allocation</a></li>
+      <li class="nav-item"><a href="provident_funds_withdraw" class="nav-link">P Funds Withdraw</a></li>
             </ul>
            </li>
            <li class="nav-item"><a href="banks-view" class="nav-link">Banks</a></li>
