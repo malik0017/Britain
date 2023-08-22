@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
                 </div> -->
                 <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Provident funds Withdraw</h1>
+            <h1 class="m-0">Provident funds Withdrawl</h1>
           </div>
           <div class="col-sm-6">            
           </div>

@@ -3,11 +3,11 @@
 if (isset($_POST['submit'])) {
     $staffId = $_POST['staff_id'];
     // Get form data
- $sql = "SELECT pf.*, s.employel_name 
+     $sql = "SELECT pf.*, s.employel_name 
 FROM ".PROVIDENTFUNDS." as pf
 INNER JOIN ".STAFF. " as s ON pf.customer_id = s.employel_id
 WHERE pf.customer_id = $staffId";
-// echo $sql;
+ echo $sql;
 // exit;
 $results = $conf->QueryRun($sql);
 
@@ -78,6 +78,7 @@ $campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
                         <tr>
                             <th width="10%">Date</th>
                             <th width="10%">Voucher No</th>
+                            <th width="10%">parent</th>
                             <th width="30%">Description</th>
                             <th width="13%" class="text-right">Deposit</th>
                             <th width="13%" class="text-right">Withdraw</th>
@@ -99,6 +100,7 @@ $campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
                                 <tr>
                                     <td><?= $gen->date_for_user($itm_vr->t_datetime) ?></td>
                                     <td><?= $itm_vr->voucher_no ?></td>
+                                    <td><?= $itm_vr->parent_id ?></td>
                                     <td>
                                         <?php
                                         if ($itm_vr->invoice_id == 0) {
