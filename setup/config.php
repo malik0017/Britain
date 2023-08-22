@@ -2,7 +2,7 @@
 session_start();
 date_default_timezone_set('Asia/Karachi');
 include_once 'db-tables.php';
-error_reporting(0);
+error_reporting(-1);
 $cDateTime = date("Y-m-d H:i:s");
 
 $_SESSION['$cDateTime'] = date("Y-m-d H:i:s");
@@ -1979,10 +1979,10 @@ class config
         
         $staff_salary_create=array();
 
-        $sql = "SELECT sl.*
+       $sql = "SELECT sl.*
 	FROM ".STAFFSALARY." as sl
 	INNER JOIN ".STAFF. " as s ON sl.emp_id = s.employel_id
-	WHERE s.campus = $campus AND s.IsActive = 1 AND s.IsLeft=0";
+	WHERE s.campus = $campus AND s.IsActive = 1 AND s.IsLeft=0  AND sl.salary_month = $mon AND sl.salary_year = $year";
 	// echo $sql;
 	$staff_salary = $this->QueryRun($sql);
 
@@ -1993,7 +1993,7 @@ class config
         foreach ($staff_salary as $key => $data) {
             $staff_salary_create[$key]=$data->emp_id;
         }
-        // print_r($staff_salary_create);
+       
         return $staff_salary_create;
 
 

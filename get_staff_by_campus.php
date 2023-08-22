@@ -9,7 +9,7 @@ $conf = new config();
 
   $options = '';
   foreach ($staffs as $data) {
-    $options .= '<option value="' . $data->id . '">' . $data->employel_name . '</option>';
+    $options .= '<option value="' . $data->employel_id . '">' . $data->employel_name . '</option>';
   }
 
   echo $options;
