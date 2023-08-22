@@ -86,7 +86,7 @@
       <li class="nav-item"><a href="staff-confirmation" class="nav-link">Staff Confirmation</a></li>
       <li class="nav-item"><a href="letf_staff_list" class="nav-link">Left Staff List</a></li>
       <li class="nav-item"><a href="letf_staff_ac_de" class="nav-link"> Staff Active & Deactive</a></li>
-      <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3"> Staff Campus Transfer</a></li>
+      <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Shift</a></li>
             </ul>
            </li>
            <li class="nav-item"><a href="banks-view" class="nav-link">Banks</a></li>
