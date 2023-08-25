@@ -1,6 +1,8 @@
 <?php
 //delete record
+echo "-------------".$loan=$conf->LoansCheck(200);
 
+exit;
 
 $campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
 
