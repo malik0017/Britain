@@ -172,7 +172,71 @@ if (isset($_POST['load'])) {
 				  $lunch_amount=$conf->LunchAmount($data);
 				  $security_data=$conf->securityCheck($data);
 				  $loans_check=$conf->LoansCheck($data);
-				
+					if($loans_check){
+						// echo "====LOan CHeCK".$loans_check."<br>";
+						if($advance<=$loans_check){
+							// echo "====Advance Is less than".$loans_check."<br>";
+							$loandata=$conf->QueryRun("SELECT * FROM " .EMPLOANS. " where emp_id=  ".$data."  AND is_completed = 0 AND parent_id=0");
+							//print_r($loandata);
+								$intallment_amount=0;
+								if($loandata !== null){
+								if(count($loandata)>0 )
+								{
+									// echo "====LOan CHeCK".$loans_check."<br>";
+									$loan_deduc=$advance;
+									foreach($loandata as $data1){
+										$installment_amount = $data1->installment;
+										//echo "==== maxid"."<br> $loan_deduc ---  $installment_amount";
+										//exit;
+										//  echo "====in looop"."<br>".$loan_deduc;
+										$max_id = $conf->single(EMPLOANS . " where id = (select MAX(id) as max_id from " . EMPLOANS . " where parent_id='".$data1->id."')", "*");
+										// print_r($max_id);
+										if(!empty($max_id)){
+											$installment_amount = $max_id->installment;
+										}
+                       
+											// echo "==== maxid"."<br> $loan_deduc ---  $installment_amount";
+											// exit;
+											if($loan_deduc>=$installment_amount){
+											
+												$date=date("Y-m-d");
+													$description='LoanRefund  BY'.$data.'against by loan id '.$data1->id.' Date '.$date.' amount is '.$installment_amount;
+													$vno = $conf->VoucherNo();
+													$vno = 'LR'.$vno;
+																											
+													$conf->FundsEntry(LOANFUNDS,$description, $installment_amount, $data, 'db',$data1->id,2, $date, $vno);
+													$amount=$data->installment;
+	
+													$loan_deduc=$loan_deduc-$installment_amount;
+											}elseif($loan_deduc<$installment_amount && ($loan_deduc>0)){
+												$description='LoanRefund  BY'.$data.'against by loan id '.$data1->id.' Date '.$date.' amount is '.$loan_deduc;
+													$vno = $conf->VoucherNo();
+													$vno = 'LR'.$vno;
+													
+													$conf->FundsEntry(LOANFUNDS,$description, $loan_deduc, $data, 'db',$data1->id,2, $date, $vno);
+													$loan_deduc=0;													
+											}
+
+											//--------update load is completed to 1
+											$iscompleted=$conf->QueryRun("SELECT customer_id, invoice_id,
+											SUM(CASE WHEN t_type = 'db' THEN t_amount ELSE 0 END) AS sum_db,
+											SUM(CASE WHEN t_type = 'cr' THEN t_amount ELSE 0 END) AS sum_cr
+									 		FROM " .LOANFUNDS. " where customer_id=  ".$data."  AND invoice_id=".$data1->id." ");
+											if($iscompleted->sum_db==$iscompleted->sum_cr){
+												$table = EMPLOANS . " set is_completed=1 where id='" . $data1->id . "'";
+												$recodes4 = $conf->updateValue( $table );
+											}
+
+											
+											
+										//}
+									}
+										
+								}		
+
+						}
+					}
+				}
 				  if( $lunch_amount ==  $lunch[$int]){
 					$lunch_amount=$lunch_amount;
 				  }else{
@@ -181,9 +245,9 @@ if (isset($_POST['load'])) {
 				  if($security_data==$security){
 					$security=$security_data;
 				  }
-				  if($loans_check==$advance){
-					$advance=$loans_check;
-				  }
+				//   if($loans_check==$advance){
+				// 	$advance=$loans_check;
+				//   }
 				  
 				  $gross_sal=$basic_salary+$lunch_amount+(int)$other-$leave_amount;
   
@@ -367,6 +431,8 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
 				$pfunds=$conf->ProvidentFunds($data->employel_id);
 				$security_data=$conf->securityCheck($data->employel_id);
 				$loans_check=$conf->LoansCheck($data->employel_id);
+				
+				$loans_remaining=$conf->currentBalance(LOANFUNDS, $data->employel_id);
 				$net_salary= $gross_sal - $security_data['total'] - $pfunds - $income_tax -$loans_check;
 
 				
@@ -389,8 +455,8 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
 						<td>  <span class="income_tax_<?php echo $int; ?>"><?php echo  $income_tax; ?></span></td>
                         <td>  <input type="text"  id="security_<?php echo $int; ?>"class="changesNo" value="<?php echo $data->security_data; ?>" name="security[]" ></td>
 						<td>  <span class="p_funds_<?php echo $int; ?>"><?php echo  $pfunds; ?></span></td>
-                        <td> <input type="text"  id="advance_<?php echo $int; ?>"class="changesNo" value="" name="advance[]" >  </td>
-						<td> <span class="advance_balance_<?php echo $int; ?>"><?php echo  '0'; ?></span> </td>
+                        <td> <input type="text"  id="advance_<?php echo $int; ?>"class="changesNo" value="<?php echo $loans_check; ?>" name="advance[]" >  </td>
+						<td> <span class="advance_balance_<?php echo $int; ?>"><?php echo  $loans_remaining; ?></span> </td>
 						<td> <span class="net_balance_<?php echo $int; ?>"><?php echo  $net_salary; ?></span> </td>
 						<td>  </td>
 						<td>  </td>

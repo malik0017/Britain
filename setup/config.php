@@ -2,7 +2,7 @@
 session_start();
 date_default_timezone_set('Asia/Karachi');
 include_once 'db-tables.php';
-error_reporting(-1);
+error_reporting(0);
 $cDateTime = date("Y-m-d H:i:s");
 
 $_SESSION['$cDateTime'] = date("Y-m-d H:i:s");
@@ -285,6 +285,7 @@ class config
     //------------Special DB functions--------------
     public function insert($values, $table)
     {
+        
         if (empty($values) || empty($table)) {
             // Noting to do
             return "";
@@ -2006,6 +2007,17 @@ class config
 
 
     }
+    // public function loanBalanceRemaining($uid)
+    // {
+    //     $where = " id = (SELECT MAX(id) from " . LOANFUNDS . " where customer_id = '" . $uid . "' AND t_type ='db')";
+    //     $preRecord = $this->singlev(LOANFUNDS . " WHERE " . $where);
+    //     $balance = $preRecord->current_balance;
+
+    //     if (empty($balance))
+    //         return 0;
+    //     // x
+    //     return $balance;
+    // }
     
 }
 

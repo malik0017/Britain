@@ -90,10 +90,13 @@ include( 'pagesettings.php' );
    gross_salary_after=Number(basic_sal_after)-Number(leave_amount)+Number(lunch)+Number(other);
    $('.gross_salary_' + rowid).text(gross_salary_after);
 
-
-
+   console.log('advance',advance);
+  console.log('Security',security);
+  console.log('p funds',security);
+  console.log('Security',security);
    var net_salary= gross_salary - Number(advance)- Number(pfunds) - Number(income_tax) - Number(security);
   //  
+  console.log('net salary',net_salary);
    
    $('.net_balance_' + rowid).text(net_salary);
 

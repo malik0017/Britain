@@ -98,6 +98,7 @@
       <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Shift</a></li>
       <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Shift</a></li>
       <li class="nav-item"><a href="loan-alteration" class="nav-link">Loan Alteration</a></li>
+      <li class="nav-item"><a href="security-alteration" class="nav-link">Security Alteration</a></li>
             </ul>
            </li>
            <li class="nav-item"><a href="banks-view" class="nav-link">Banks</a></li>
