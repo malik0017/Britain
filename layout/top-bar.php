@@ -86,6 +86,9 @@
       <li class="nav-item"><a href="staff-confirmation" class="nav-link">Staff Confirmation</a></li>
       <li class="nav-item"><a href="letf_staff_list" class="nav-link">Left Staff List</a></li>
       <li class="nav-item"><a href="letf_staff_ac_de" class="nav-link"> Staff Active & Deactive</a></li>
+               <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Transfer</a></li>
+      <li class="nav-item"><a href="shift-timing-view" class="nav-link mb-3">Shift Timing</a></li>
+
 
       <li class="nav-item"><a href="create_salary" class="nav-link">Create Salary</a></li>
       <li class="nav-item"><a href="holiday_mark" class="nav-link">Holiday Marks</a></li>
