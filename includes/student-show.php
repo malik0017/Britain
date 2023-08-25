@@ -34,11 +34,11 @@ FROM ".STUDENTFEE." sf
 INNER JOIN ".Student." st ON sf.id = st.id
 
 WHERE sf.id = $stud_id";
-echo"aassssssssssssss".$sql2;
+// echo"aassssssssssssss".$sql2;
 // print_r($sql2);
 $results2 = $conf->QueryRun($sql2);
 $results = $results2[0];
-print_r($results);
+// print_r($results);
 
 
 ?>

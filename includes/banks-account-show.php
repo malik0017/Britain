@@ -3,14 +3,18 @@ $banks_account_id =  $_REQUEST[ 'CD' ] ;
 
 // $results = $conf->singlev( BANKACCOUNT . " WHERE id='" . $banks_account_id . "'" );
 
-$sql = "SELECT a.*, c.campus_name
+$sql = "SELECT a.*, c.campus_name, d.bank_name
 FROM ".BANKACCOUNT." as a
 INNER JOIN ".CAMPUStbl. " as c ON a.campus = c.id
+INNER JOIN ".BANK. " as d ON a.bank_name = d.id
 
 WHERE a.id = $banks_account_id";
 $results1 = $conf->QueryRun($sql);
 $results = $results1[0];
-//  print_r($sql);
+  // print_r($sql);
+  // $banks = $conf->singlev( BANK . " WHERE id='" . $banks_account_id . "'" );
+  // print_r($banks);
+
 ?>
 
 
