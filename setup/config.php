@@ -43,7 +43,7 @@ class config
     function fetchall($table)
     {
         $sql = "select * from $table";
-          echo $sql;
+        //   echo $sql;
         $result = mysqli_query($this->link, $sql);
         $arr = array();
         while ($rs = mysqli_fetch_object($result)) {
@@ -1904,7 +1904,7 @@ class config
         if(count($securitydata)>0)
         {
             foreach($securitydata as $key =>$data){
-                $amount=$data->amount/$data->installment_no;
+                $amount=$data->amount/1;
                 $total=$total + $amount;
                 $arr[$data->id]=$amount;
                 $arr['total']=$total;
@@ -1940,14 +1940,22 @@ class config
     public function LoansCheck($id)
     {
         $total=0;
-       
-        $loandata=$this->QueryRun("SELECT * FROM " .EMPLOANS. " where emp_id=  ".$id."  AND is_completed = 0");
+         $loandata=$this->QueryRun("SELECT * FROM " .EMPLOANS. " where emp_id=  ".$id."  AND is_completed = 0");
+         $intallment_amount=0;
         if($loandata !== null){
         if(count($loandata)>0 )
         {
             foreach($loandata as $data){
-                $amount=$data->amount/$data->installment_no;
-                $total=$total + $amount;
+                 $intallment_amount=$data->installment;
+                $max_id = $this->single(EMPLOANS . " where id = (select MAX(id) as max_id from " . EMPLOANS . " where parent_id='".$data->id."')", "*");
+              
+                if(!empty($max_id)){
+                       
+                    $intallment_amount=0;
+                }
+                
+                $total+=$intallment_amount;
+                
             }
             
             return $total;
