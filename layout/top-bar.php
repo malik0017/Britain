@@ -116,6 +116,7 @@
       <li class="nav-item"><a href="transfer-in-list" class="nav-link">Student Transfer In List</a></li>
       <li class="nav-item"><a href="strength-sheet" class="nav-link">Strength Sheet</a></li>
       <li class="nav-item"><a href="pro_fund_ledger" class="nav-link">Provident ledger</a></li>
+      <li class="nav-item"><a href="left-staff-report" class="nav-link">Left Staff Report</a></li>
             </ul>
            </li>
             

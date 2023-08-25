@@ -15,6 +15,7 @@ if(!$val->isSuccess()){
     
 		$data_post = array( 'session_year' => $session_year, 'user_id' => $_SESSION[ 'user_reg' ],'created_at' => $cDateTime);
 		$recodes = $conf->insert( $data_post, SESSIONYEAR );
+    // print_r($data_post);
 		if ( $recodes == true ) {
 			$success = "Data <strong>Added</strong> Successfully";
 
