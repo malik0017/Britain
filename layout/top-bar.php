@@ -97,6 +97,7 @@
       <li class="nav-item"><a href="provident_funds_withdraw" class="nav-link">P Funds Withdraw</a></li>
       <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Shift</a></li>
       <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Shift</a></li>
+      <li class="nav-item"><a href="loan-alteration" class="nav-link">Loan Alteration</a></li>
             </ul>
            </li>
            <li class="nav-item"><a href="banks-view" class="nav-link">Banks</a></li>

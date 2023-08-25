@@ -24,10 +24,10 @@ if (isset($_POST['submit'])) {
     // $table = STAFF . " set `basic_salary`='" . $basic_salary . "' where employel_id='" . $data . "'";
     // 			$recodes1 = $conf->updateValue($table);
 
-         $date=date("Y-m-d");
-				$description='Loan BY'.$data->employel_name.' Date '.$date.' amount is '.$pfunds;
-				$vno = $conf->VoucherNo();
-				$vno = 'LF'.$vno;
+        //  $date=date("Y-m-d");
+				// $description='Loan BY'.$data->employel_name.' Date '.$date.' amount is '.$pfunds;
+				// $vno = $conf->VoucherNo();
+				// $vno = 'LF'.$vno;
 				
    
     if ($recodes == true) {

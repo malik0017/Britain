@@ -43,7 +43,7 @@ class config
     function fetchall($table)
     {
         $sql = "select * from $table";
-         // echo $sql;
+          echo $sql;
         $result = mysqli_query($this->link, $sql);
         $arr = array();
         while ($rs = mysqli_fetch_object($result)) {
