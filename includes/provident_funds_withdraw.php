@@ -10,13 +10,15 @@ if (isset($_POST['submit'])) {
   $staffId = $_POST['staff_id'];
   $expiryDate = $_POST['expiry_date'];
   $amount = $_POST['amount'];
-  $installment_no = $_POST['installment_no'];
-
   
+         $date=date("Y-m-d");
+				$description='Funds BY'.$staffId.' Date '.$date.' amount is '.$amount;
+				$vno = $conf->VoucherNo();
+				$vno = 'PF'.$vno;
+				
+				
 
-
-  $data_post = array('emp_id' => $staffId,'amount' => $amount,'date' => $expiryDate, 'installment_no' => $installment_no,'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime);
-    $recodes = $conf->insert($data_post, EMPLOANS);
+				$recodes=$conf->FundsEntry(PROVIDENTFUNDS,$description, $amount, $staffId, 'db',0,1, $date, $vno);
     if ($recodes == true) {
       $success = "Data <strong>Added</strong> Successfully";
 
@@ -43,7 +45,7 @@ if (isset($_POST['submit'])) {
                 </div> -->
                 <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Loan Allocation </h1>
+            <h1 class="m-0">Provident funds Withdrawl</h1>
           </div>
           <div class="col-sm-6">            
           </div>
@@ -75,12 +77,7 @@ if (isset($_POST['submit'])) {
                         <input type="text" class="form-control" id="amount" name="amount" placeholder=""/>
                       </div>
                     </div>
-                    <div id="staffkid" class="col-lg-6 col-md-4 col-sm-6">
-                      <div class="form-group">
-                        <label for="staff" class="form-label">NO of Installment</label>
-                        <input type="text" class="form-control" id="installment_no" name="installment_no" placeholder=""/>
-                      </div>
-                    </div>
+                   
                     <div id="expirydate" class="col-lg-6 col-md-4 col-sm-6">
                       <div class="form-group">
                         <label for="expiry_date">Date</label>
