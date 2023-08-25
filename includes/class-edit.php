@@ -16,7 +16,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 	
     if ( empty( $error ) ) {
 
-      $table = CLASStbl . " set `class_name`='" . $class_name . "',`is_college`='" . $college . "' where id='" . $class_id . "'";
+    $table = CLASStbl . " set `class_name`='" . $class_name . "',`is_college`='" . $college . "' where id='" . $class_id . "'";
       $recodes = $conf->updateValue( $table );
       
   

@@ -104,6 +104,7 @@
       <li class="nav-item"><a href="transfer-out-list" class="nav-link">Student Transfer Out List</a></li>
       <li class="nav-item"><a href="transfer-in-list" class="nav-link">Student Transfer In List</a></li>
       <li class="nav-item"><a href="strength-sheet" class="nav-link">Strength Sheet</a></li>
+      <li class="nav-item"><a href="left-staff-report" class="nav-link">Left Staff Report</a></li>
             </ul>
            </li>
             

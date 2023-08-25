@@ -100,5 +100,27 @@ var lunch_allowance=res.lunch;
     });
 
 </script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#campus").on("change", function() {
+      let campusId = $(this).val();
+
+     // Send an AJAX request to fetch staff based on the selected campus
+      $.ajax({
+        url: './get_staff_by_campus',
+        type: "POST",
+        data: { campusId: campusId },
+        success: function(response) {
+          // alert(response);
+          $('#staff_id').html(response); // Update staff dropdown with fetched options
+        }
+      });
+
+
+      
+    });
+  });
+</script>
 </body>
 </html>

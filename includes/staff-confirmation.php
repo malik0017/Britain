@@ -33,6 +33,9 @@ $salary_type = $conf->fetchall(SALARY . " WHERE is_deleted=0");
 $max_id = $conf->single(STAFF, 'MAX(id) as max_id ');
 
 $employel_name = $conf->fetchall(STAFF . " WHERE is_deleted=0");
+$campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
+// echo"Aamir".$data;
+// print_r($campus_name);
 
 
 ?>
@@ -48,7 +51,27 @@ $employel_name = $conf->fetchall(STAFF . " WHERE is_deleted=0");
               <div class="card-body">
                 <div class="row">
 
-                  <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                      <div class="form-group">
+                        <label for="campus" class="form-label">Campus</label>
+                        <select class="form-select form-control campus" id="campus" tabindex="6" name="campus" required>
+                          <?php foreach ($campus_name as $data) { ?>
+                            <option value="<?php echo $data->id; ?>"><?php echo $data->campus_name; ?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div id="staffkid" class="col-lg-3 col-md-4 col-sm-6">
+                      <div class="form-group">
+                        <label for="staff" class="form-label">Staff</label>
+                        <select class="form-select form-control salary" id="staff_id" tabindex="42" name="staff_id">
+                          <!-- Staff options will be dynamically populated here -->
+                        </select>
+                      </div>
+                    </div>
+
+                  <!-- <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="form-group">
                       <label for="employel_name"> Employee</label>
 
@@ -59,7 +82,7 @@ $employel_name = $conf->fetchall(STAFF . " WHERE is_deleted=0");
 
                       </select>
                     </div>
-                  </div>
+                  </div> -->
 
 
 

@@ -257,7 +257,7 @@ $max_id = $conf->single(STAFF, 'MAX(id) as max_id ');
                     <div class="form-group">
                       <label for="jouning_date"> Jouning Date </label>
 
-                      <input type="date" class="form-control" id="jouning_date" name="jouning_date" tabindex="10" placeholder="">
+                      <input type="date" class="form-control" id="jouning_date" name="jouning_date"  value="<?php echo date('Y-m-d'); ?>" tabindex="10" placeholder="">
                     </div>
                   </div>
 

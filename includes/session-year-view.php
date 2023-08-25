@@ -13,6 +13,7 @@ if ( isset( $_POST[ 'deleteid' ] ) ) {
  
 }
 $results=$conf->fetchall(SESSIONYEAR ." where is_deleted = 0");
+// print_r($results);
  ?>
 
 
@@ -58,11 +59,7 @@ $results=$conf->fetchall(SESSIONYEAR ." where is_deleted = 0");
                     <td>
                       <?=$data->session_year; ?>
                     </td>
-                    <!-- <td>laraib</td> -->
-                    <!-- <td>teacher</td> -->
                     
-                    <!-- <td>Khatak</td>
-                    <td>Multan</td> -->
                     
                     
 
