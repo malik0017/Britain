@@ -23,7 +23,7 @@ $staff_id =  $_REQUEST[ 'CD' ] ;
         INNER JOIN ".EMPLOYETYE." AS s ON a.employel_type = s.id
         INNER JOIN ".DEPARTMENT." AS d ON a.department = d.id
         INNER JOIN ".CAMPUStbl." AS p ON a.campus = p.id
-        INNER JOIN ".SALARY." AS t ON a.salary_type = t.salary_type
+        INNER JOIN ".SALARY." AS t ON a.salary_type = t.id
         WHERE a.id = $staff_id";
         //  echo "qwwwwwwwwwww".$sql;
         // print_r($sql);
