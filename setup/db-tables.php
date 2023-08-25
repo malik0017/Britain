@@ -56,4 +56,5 @@ define("SALARYlOAN", "salary_loan");
 define("HOLIDAYMARK", "holidays_mark");
 define("INREAMENTSALARY", "increatment_salary");
 define("PROVIDENTFUNDS", "tbl_provident_funds");
+define("LOANFUNDS", "tbl_loan_funds");
 ?>
