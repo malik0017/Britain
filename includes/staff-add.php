@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
   $basic_salary = ($_POST['basic_salary']);
   $security_ded = ($_POST['security_ded']);
   $account_no = ($_POST['account_no']);
-  $perdaydeduction = ($_POST['perdaydeduction']);
+   $perdaydeduction = ($_POST['perdaydeduction']);
   $travelling_allowane = ($_POST['travelling_allowane']);
   $lunch_allowance = ($_POST['lunch_allowance']);
   $other_allowance = ($_POST['other_allowance']);
@@ -130,7 +130,7 @@ if (isset($_POST['submit'])) {
       'salary_type' => $salary_type,
       'basic_salary' => $basic_salary,
       'account_no' => $account_no,
-      'perdaydeduction' => $perdaydeduction,
+       'perdaydeduction' => $perdaydeduction,
       'travelling_allowane' => $travelling_allowane,
       'lunch_allowance' => $lunch_allowance,
       'other_allowance' => $other_allowance,
@@ -158,8 +158,9 @@ if (isset($_POST['submit'])) {
     // print_r($data_post);
     // exit;
     $recodes = $conf->insert($data_post, STAFF);
-    $data_post = array('emp_id' => $recodes,'amount' => $basic_salary, 'installment' => $security_ded,'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime);
+     $data_post = array('emp_id' => $recodes,'amount' => $basic_salary, 'installment' => $security_ded,'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime);
     $recodes1 = $conf->insert($data_post, EMPSECURITY);
+
     if ($recodes == true) {
       $success = "Data <strong>Added</strong> Successfully";
       //$gen->redirecttime( 'class', '2000' );
