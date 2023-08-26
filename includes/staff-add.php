@@ -43,12 +43,13 @@ if (isset($_POST['submit'])) {
   $city = ($_POST['city']);
   $salary_type = ($_POST['salary_type']);
   $basic_salary = ($_POST['basic_salary']);
+  $security_ded = ($_POST['security_ded']);
   $account_no = ($_POST['account_no']);
-  // $ded_ration = ($_POST['ded_ration']);
+   $perdaydeduction = ($_POST['perdaydeduction']);
   $travelling_allowane = ($_POST['travelling_allowane']);
   $lunch_allowance = ($_POST['lunch_allowance']);
   $other_allowance = ($_POST['other_allowance']);
-  // $fund_duction = ($_POST['fund_duction']);
+  $providentfundratio = ($_POST['providentfundratio']);
   $bank_account = ($_POST['bank_account']);
   $grace_time = ($_POST['grace_time']);
   $employel_email = ($_POST['employel_email']);
@@ -129,11 +130,11 @@ if (isset($_POST['submit'])) {
       'salary_type' => $salary_type,
       'basic_salary' => $basic_salary,
       'account_no' => $account_no,
-      // 'ded_ration' => $ded_ration,
+       'perdaydeduction' => $perdaydeduction,
       'travelling_allowane' => $travelling_allowane,
       'lunch_allowance' => $lunch_allowance,
       'other_allowance' => $other_allowance,
-      // 'fund_duction' => $fund_duction,
+      'providentfundratio' => $providentfundratio,
       'bank_account' => $bank_account,
       'grace_time' => $grace_time,
       'employel_email' => $employel_email,
@@ -151,12 +152,15 @@ if (isset($_POST['submit'])) {
       'appointmate_class' => $appointmate_class,
       'confirmation_date' => $confirmation_date,
       'transfer_bank' => $transfer_bank,
-
-      'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime
+      'user_id' => $_SESSION['user_reg'], 
+      'created_at' => $cDateTime
     );
+    // print_r($data_post);
+    // exit;
     $recodes = $conf->insert($data_post, STAFF);
-    // print_r($recodes);
-    // echo "wqqqqqqqqqqqqqq" . $recodes;
+     $data_post = array('emp_id' => $recodes,'amount' => $basic_salary, 'installment' => $security_ded,'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime);
+    $recodes1 = $conf->insert($data_post, EMPSECURITY);
+
     if ($recodes == true) {
       $success = "Data <strong>Added</strong> Successfully";
       //$gen->redirecttime( 'class', '2000' );
@@ -358,6 +362,13 @@ $max_id = $conf->single(STAFF, 'MAX(id) as max_id ');
 
                     </div>
                   </div>
+                  <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="form-group">
+                      <label for="basic_salary"> Security Deduction Per Months</label>
+                      <input type="number" class="form-control" id="security_ded" name="security_ded" placeholder="">
+
+                    </div>
+                  </div>
 
                   <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="form-group">
@@ -369,8 +380,8 @@ $max_id = $conf->single(STAFF, 'MAX(id) as max_id ');
 
                   <!-- <div class="col-lg-3 col-md-6 col-sm-6">
                                 <div class="form-group">
-                                  <label for="ded_ration" > Ded.Ratio </label>
-                                  <input type="text" class="form-control" id="ded_ration" name="ded_ration" tabindex="22" placeholder="" readonly required>                                      
+                                  <label for="perdaydeduction" > Ded.Ratio </label>
+                                  <input type="text" class="form-control" id="perdaydeduction" name="perdaydeduction" tabindex="22" placeholder="" readonly required>                                      
                                       
                           </div>
                             </div> -->
@@ -399,8 +410,8 @@ $max_id = $conf->single(STAFF, 'MAX(id) as max_id ');
                   </div>
                   <!-- <div class="col-lg-3 col-md-6 col-sm-6">
                                 <div class="form-group">
-                                  <label for="fund_duction" > P.Fund Deduction </label>
-                                  <input type="text" class="form-control" id="fund_duction" name="fund_duction" tabindex="26" placeholder="" readonly required>                                      
+                                  <label for="providentfundratio" > P.Fund Deduction </label>
+                                  <input type="text" class="form-control" id="providentfundratio" name="providentfundratio" tabindex="26" placeholder="" readonly required>                                      
                                       
                           </div>
                             </div> -->

@@ -9,22 +9,27 @@ if (isset($_POST['submit'])) {
   $campusId = $_POST['campus'];
   $staffId = $_POST['staff_id'];
   $expiryDate = $_POST['expiry_date'];
-  $amount = $_POST['amount'];
+  // $amount = $_POST['amount'];
   $installment_no = $_POST['installment_no'];
+  $loan_id = $_POST['loan_id'];
 
-  
+        $loan = $conf->singlev( EMPLOANS ." WHERE id= $loan_id " );
+         $amount=$loan->amount;
 
 
-  $data_post = array('emp_id' => $staffId,'amount' => $amount,'date' => $expiryDate, 'installment_no' => $installment_no,'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime);
+  $data_post = array('emp_id' => $staffId,'amount' => $amount,'parent_id' => $loan_id,'date' => $expiryDate, 'installment' => $installment_no,'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime);
     $recodes = $conf->insert($data_post, EMPLOANS);
-      $date=date("Y-m-d");
-				$description='Loan BY'.$staffId.' Date '.$date.' amount is '.$amount;
-				$vno = $conf->VoucherNo();
-				$vno = 'LF'.$vno;
-				
-				
 
-				$conf->FundsEntry(LOANFUNDS,$description, $amount, $staffId, 'cr',0,1, $date, $vno);
+
+    // $table = STAFF . " set `basic_salary`='" . $basic_salary . "' where employel_id='" . $data . "'";
+    // 			$recodes1 = $conf->updateValue($table);
+
+        //  $date=date("Y-m-d");
+				// $description='Loan BY'.$data->employel_name.' Date '.$date.' amount is '.$pfunds;
+				// $vno = $conf->VoucherNo();
+				// $vno = 'LF'.$vno;
+				
+   
     if ($recodes == true) {
       $success = "Data <strong>Added</strong> Successfully";
 
@@ -51,7 +56,7 @@ if (isset($_POST['submit'])) {
                 </div> -->
                 <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Loan Allocation </h1>
+            <h1 class="m-0">Loan Alteration </h1>
           </div>
           <div class="col-sm-6">            
           </div>
@@ -79,13 +84,21 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div id="staffkid" class="col-lg-6 col-md-4 col-sm-6">
                       <div class="form-group">
+                        <label for="staff" class="form-label">Loan </label>
+                        <select class="form-select form-control" id="loan_id"  name="loan_id">
+                          <!-- Staff options will be dynamically populated here -->
+                        </select>
+                      </div>
+                    </div>
+                    <!-- <div id="staffkid" class="col-lg-6 col-md-4 col-sm-6">
+                      <div class="form-group">
                         <label for="staff" class="form-label">Amount</label>
                         <input type="text" class="form-control" id="amount" name="amount" placeholder=""/>
                       </div>
-                    </div>
+                    </div> -->
                     <div id="staffkid" class="col-lg-6 col-md-4 col-sm-6">
                       <div class="form-group">
-                        <label for="staff" class="form-label">NO of Installment</label>
+                        <label for="staff" class="form-label">Installment Amount</label>
                         <input type="text" class="form-control" id="installment_no" name="installment_no" placeholder=""/>
                       </div>
                     </div>

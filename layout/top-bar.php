@@ -86,6 +86,9 @@
       <li class="nav-item"><a href="staff-confirmation" class="nav-link">Staff Confirmation</a></li>
       <li class="nav-item"><a href="letf_staff_list" class="nav-link">Left Staff List</a></li>
       <li class="nav-item"><a href="letf_staff_ac_de" class="nav-link"> Staff Active & Deactive</a></li>
+               <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Transfer</a></li>
+      <li class="nav-item"><a href="shift-timing-view" class="nav-link mb-3">Shift Timing</a></li>
+
 
       <li class="nav-item"><a href="create_salary" class="nav-link">Create Salary</a></li>
       <li class="nav-item"><a href="holiday_mark" class="nav-link">Holiday Marks</a></li>
@@ -93,6 +96,9 @@
       <li class="nav-item"><a href="loan_allocation" class="nav-link">Loan Allocation</a></li>
       <li class="nav-item"><a href="provident_funds_withdraw" class="nav-link">P Funds Withdraw</a></li>
       <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Shift</a></li>
+      <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Shift</a></li>
+      <li class="nav-item"><a href="loan-alteration" class="nav-link">Loan Alteration</a></li>
+      <li class="nav-item"><a href="security-alteration" class="nav-link">Security Alteration</a></li>
             </ul>
            </li>
            <li class="nav-item"><a href="banks-view" class="nav-link">Banks</a></li>

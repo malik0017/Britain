@@ -10,7 +10,7 @@ include( 'pagesettings.php' );
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?=SITE_NAME?> | New Staff</title>
+  <title><?=SITE_NAME?> | Shift Timing</title>
   <?php include 'layout/header.php'; ?>
 </head>
 <body class="hold-transition layout-top-nav">
@@ -24,10 +24,10 @@ include( 'pagesettings.php' );
       <div class="container">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0"> New Staff</h1>
+            <h1 class="m-0">Shift Timing</h1>
           </div>
           <div class="col-sm-6 mt-2">  
-          <a class="btn btn-warning float-right" href="staff-view.php">Back</a>
+          <a class="btn btn-warning float-right" href="shift-timing-view.php">Back</a>
 
           </div>
         </div>
@@ -53,7 +53,7 @@ console.log(basic_salary);
 // alert(basic_salary);
 var ded_ratio=Number(basic_salary)*12/365;
 var fund_duction=Number(basic_salary)*7.5/100;
-var security_deduct=Number(basic_salary)/2;
+
 //  var indexnum = $(this).attr("rownum");
 //  var actval = $(".actual_"+indexnum).val();
 //  var pkg = Number(actval) - Number(concession);
@@ -64,7 +64,6 @@ var security_deduct=Number(basic_salary)/2;
 //  }
           
            $("#ded_ration").val(Math.round(ded_ratio));
-           $("#security_ded").val(Math.round(security_deduct));
            $("#fund_duction").val(Math.round(fund_duction));
 
 // // alert(indexnum);
