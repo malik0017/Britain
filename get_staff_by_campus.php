@@ -24,37 +24,28 @@ $conf = new config();
   else if (isset($_POST['securitycheck']) && ($_POST['securitycheck'] == '123sdgserdyg4rtyr6df')) {
     $empId = $_POST['empId'];
   //  echo "malik".$campusId;
-  $options = '<option >'. 'Select Security' .'</option>';
+  // $options = '<option >'. 'Select Security' .'</option>';
+  $data=array();
   $emploan = $conf->fetchall(EMPSECURITY . " WHERE  emp_id = " . $empId);
   if(empty($emploan)){
-    $options = '<option >'. 'No Data Found' .'</option>';
+    // $options = '<option >'. 'No Data Found' .'</option>';
+    // $data['amount']='No Data Found';
   }
   else{
-    foreach ($emploan as $data) {
-      $options .= '<option value="' . $data->id . '">' . $data->amount . '</option>';
-    }
-    echo $options;
+    // foreach ($emploan as $data) {
+    //   $options .= '<option value="' . $data->id . '">' . $data->amount . '</option>';
+    // }
+    $data['amount']=$emploan[0]->amount;
+    $data['installment']=$emploan[0]->installment;
+    
 
   }
+  $result = json_encode($data);
+    echo $result;
  
   
 }
-else if (isset($_POST['securitybalance']) && ($_POST['securitybalance'] == 'ewqtdhg3422dhfhet')) {
-  $empId = $_POST['empId'];
-//  echo "malik".$campusId;
-$empsecurity = $conf->fetchall(EMPSECURITY . " WHERE  id = " . $empId);
-// print_r($empsecurity);
-// echo "<br>";
-// echo $empsecurity[0]->installment;
-if(!empty($empsecurity)){
- 
-  echo $empsecurity[0]->installment;
-}
 
-
-
-
-}
   else{
     $campusId = $_POST['campusId'];
     //  echo "malik".$campusId;
