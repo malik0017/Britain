@@ -74,7 +74,8 @@ include( 'pagesettings.php' );
     });
     $("#staff_id").on("change", function() {
       let empId = $(this).val();
-
+      $('#security_id').text('');
+      $('#installment_no').val(0);
      // Send an AJAX request to fetch staff based on the selected campus
       $.ajax({
         url: './get_staff_by_campus',
@@ -82,7 +83,17 @@ include( 'pagesettings.php' );
         data: { empId: empId,securitycheck:'123sdgserdyg4rtyr6df' },
         success: function(response) {
           // alert(response);
-          $('#security_id').html(response); // Update staff dropdown with fetched options
+          var result = JSON.parse(response);
+          // $('#security_id').html(response); // Update staff dropdown with fetched options
+           if (result && Object.keys(result).length != 0) {
+          
+          // console.log('=======',result.amount);
+          // console.log('=======',result.installment);
+          $('#security_id').text(result.amount);
+          $('#installment_no').val(result.installment);
+          }else{
+            $('#security_id').text('No Record Found');
+          }
         }
       });
 

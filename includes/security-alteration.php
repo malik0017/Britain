@@ -72,9 +72,13 @@ if (isset($_POST['submit'])) {
                     <div id="staffkid" class="col-lg-6 col-md-4 col-sm-6">
                       <div class="form-group">
                         <label for="staff" class="form-label">Security </label>
-                        <select class="form-select form-control" id="security_id"  name="security_id">
-                          <!-- Staff options will be dynamically populated here -->
-                        </select>
+                        <div> <span  id="security_id"></span></div>
+                       
+                        <!-- <input type="text" class="form-control" id="security_id" name="security_id" placeholder=""/> -->
+                        <!-- <select class="form-select form-control" id="security_id"  name="security_id">
+                         
+
+                        </select> -->
                       </div>
                     </div>
                     <!-- <div id="staffkid" class="col-lg-6 col-md-4 col-sm-6">
