@@ -44,11 +44,11 @@ if (isset($_POST['submit'])) {
   $salary_type = ($_POST['salary_type']);
   $basic_salary = ($_POST['basic_salary']);
   $account_no = ($_POST['account_no']);
-  $ded_ration = ($_POST['ded_ration']);
+  // $ded_ration = ($_POST['ded_ration']);
   $travelling_allowane = ($_POST['travelling_allowane']);
   $lunch_allowance = ($_POST['lunch_allowance']);
   $other_allowance = ($_POST['other_allowance']);
-  $fund_duction = ($_POST['fund_duction']);
+  // $fund_duction = ($_POST['fund_duction']);
   $bank_account = ($_POST['bank_account']);
   $grace_time = ($_POST['grace_time']);
   $employel_email = ($_POST['employel_email']);
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
   $total_year = ($_POST['total_year']);
   $total_months = ($_POST['total_months']);
   $designation = ($_POST['designation']);
-  $starting_salary = ($_POST['starting_salary']);
+  $startsalary = ($_POST['startsalary']);
 
 
 
@@ -129,11 +129,11 @@ if (isset($_POST['submit'])) {
       'salary_type' => $salary_type,
       'basic_salary' => $basic_salary,
       'account_no' => $account_no,
-      'ded_ration' => $ded_ration,
+      // 'ded_ration' => $ded_ration,
       'travelling_allowane' => $travelling_allowane,
       'lunch_allowance' => $lunch_allowance,
       'other_allowance' => $other_allowance,
-      'fund_duction' => $fund_duction,
+      // 'fund_duction' => $fund_duction,
       'bank_account' => $bank_account,
       'grace_time' => $grace_time,
       'employel_email' => $employel_email,
@@ -143,7 +143,7 @@ if (isset($_POST['submit'])) {
       'total_year' => $total_year,
       'total_months' => $total_months,
       'designation' => $designation,
-      'starting_salary' => $starting_salary,
+      'startsalary' => $startsalary,
       'employel_image' => $employel_image,
       'last_qualification' => $last_qualification,
       'institute' => $institute,
@@ -155,8 +155,8 @@ if (isset($_POST['submit'])) {
       'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime
     );
     $recodes = $conf->insert($data_post, STAFF);
-    print_r($recodes);
-    echo "wqqqqqqqqqqqqqq" . $recodes;
+    // print_r($recodes);
+    // echo "wqqqqqqqqqqqqqq" . $recodes;
     if ($recodes == true) {
       $success = "Data <strong>Added</strong> Successfully";
       //$gen->redirecttime( 'class', '2000' );
@@ -475,8 +475,8 @@ $max_id = $conf->single(STAFF, 'MAX(id) as max_id ');
 
                   <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="form-group">
-                      <label for="starting_salary"> Starting salary </label>
-                      <input type="text" class="form-control" id="starting_salary" name="starting_salary" tabindex="36" placeholder="">
+                      <label for="startsalary"> Starting salary </label>
+                      <input type="text" class="form-control" id="startsalary" name="startsalary" tabindex="36" placeholder="">
 
                     </div>
                   </div>

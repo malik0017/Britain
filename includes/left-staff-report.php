@@ -78,9 +78,9 @@ if (isset($_POST['search_by_campus'])) {
                 
 
               </div>
-              <div class="text-center float-right mt-3  mr-4">
+              <!-- <div class="text-center float-right mt-3  mr-4">
                               <input type="submit" name="print" value="Print" class="btn btn-warning " tabindex="8"/>
-                             </div>
+                             </div> -->
               <!-- /.card-header -->
               <div class="card-body">
                 
@@ -145,33 +145,14 @@ if (isset($_POST['search_by_campus'])) {
 
 
 
-                        <!-- <td class="">
-
-                          <form action="staff-show.php?CD=<?php echo $data->id; ?>" method="post">
-                            <button type="submit" class="btn btn-primary">Show</button>
-
-                          </form>
-
-                        </td>
-                        <td>
-                          <form action="left_staff_edit.php.php?CD=<?php echo $data->id; ?>" method="post">
-
-                            <button type="submit" class="btn btn-primary">Edit</button>
-
-                          </form>
-                        </td>
-                        <td>
-                          <form action="" method="post">
-                            <input type="hidden" name="deleteid" value="<?php echo $data->id; ?>">
-
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete it?')">Delete</button>
-                          </form>
-                        </td> -->
+                       
                       </tr>
                     <?php
                     }
                     ?>
                   </tbody>
+                  <a class="btn btn-primary" style="float: right" href="left-staff-print-report.php">Print</a>
+
                 </table>
                 <!-- /.card-body -->
               </div>
