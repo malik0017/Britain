@@ -23,7 +23,7 @@ if (isset($_POST['submit'])) {
     if ($recodes == true) {
       $success = "Record <strong>Updated</strong> Successfully";
 
-      $gen->redirecttime('employel-level-view.php', '2000');
+      $gen->redirecttime('employel-type-view.php', '2000');
     } else {
       $error = "Employee Level Not Updated";
     }
