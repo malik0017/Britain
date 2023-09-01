@@ -1,19 +1,6 @@
 <?php
 //delete record
-if (isset($_POST['deleteid'])) {
-  $deleteid = $_POST['deleteid'];
-  //delete From Database
-  //$flagmain = $conf->delme( CLASStbl, $deleteid, "id" );
-  //delete From Frontened
-  $table = STAFF . " set `is_deleted`=1  where id='" . $deleteid . "'";
-  $flagmain = $conf->updateValue($table);
-  if ($flagmain) {
-    $success = "<p>Record  is <strong>Deleted</strong> Successfully</p>";
-  }
-}
-// $results = $conf->fetchall(STAFF . " where is_deleted = 0");
-$results = "SELECT * FROM ".STAFF." where is_deleted = 0 && IsLeft= 0  LIMIT 100 ";
-$results = $conf->QueryRun($results);
+
 
 $campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
 
@@ -22,21 +9,30 @@ if (isset($_POST['submit'])) {
   $campusId = $_POST['campus'];
   $staffId = $_POST['staff_id'];
   $expiryDate = $_POST['expiry_date'];
+  $amount = $_POST['amount'];
+  $installment_no = $_POST['installment_no'];
 
-  // Example: Update the 'staff' table with the selected campus, staff, and expiry date
-  $query = STAFF . " set `IsLeft`= 1 ,`LeftDate`='" . $expiryDate . "' WHERE employel_id = '" .$staffId ."'";
-  $update= $conf->updateValue($query);
+  
 
 
-  if ( $update == true ) {
-    $success = "Record <strong>Updated</strong> Successfully";
+  $data_post = array('emp_id' => $staffId,'amount' => $amount,'date' => $expiryDate, 'installment_no' => $installment_no,'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime);
+    $recodes = $conf->insert($data_post, EMPLOANS);
+      $date=date("Y-m-d");
+				$description='Loan BY'.$staffId.' Date '.$date.' amount is '.$amount;
+				$vno = $conf->VoucherNo();
+				$vno = 'LF'.$vno;
+				
+				
 
-    // $gen->redirecttime( 'staff-view.php', '2000' );
-  } 
-  else {
-    $error = "Staff Not Updated";
-  }
+				$conf->FundsEntry(LOANFUNDS,$description, $amount, $staffId, 'cr',0,1, $date, $vno);
+    if ($recodes == true) {
+      $success = "Data <strong>Added</strong> Successfully";
 
+      //$gen->redirecttime( 'campus', '2000' );
+    }
+
+
+  
 }
 
 ?>
@@ -55,14 +51,14 @@ if (isset($_POST['submit'])) {
                 </div> -->
                 <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Staff Deactive </h1>
+            <h1 class="m-0">Loan Allocation </h1>
           </div>
           <div class="col-sm-6">            
           </div>
         </div>
                 <form action=" " method="POST" enctype="multipart/form-data">
                   <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="col-lg-6 col-md-4 col-sm-6">
                       <div class="form-group">
                         <label for="campus" class="form-label">Campus</label>
                         <select class="form-select form-control campus" id="campus" tabindex="6" name="campus" required>
@@ -73,7 +69,7 @@ if (isset($_POST['submit'])) {
                       </div>
                     </div>
 
-                    <div id="staffkid" class="col-lg-3 col-md-4 col-sm-6">
+                    <div id="staffkid" class="col-lg-6 col-md-4 col-sm-6">
                       <div class="form-group">
                         <label for="staff" class="form-label">Staff</label>
                         <select class="form-select form-control" id="staff_id" tabindex="42" name="staff_id">
@@ -81,117 +77,37 @@ if (isset($_POST['submit'])) {
                         </select>
                       </div>
                     </div>
-                    <div id="expirydate" class="col-lg-3 col-md-4 col-sm-6">
+                    <div id="staffkid" class="col-lg-6 col-md-4 col-sm-6">
                       <div class="form-group">
-                        <label for="expiry_date">Expiry Date</label>
-                        <input type="date" class="form-control" id="expiry_date" name="expiry_date" tabindex="18" placeholder="">
+                        <label for="staff" class="form-label">Amount</label>
+                        <input type="text" class="form-control" id="amount" name="amount" placeholder=""/>
                       </div>
                     </div>
+                    <div id="staffkid" class="col-lg-6 col-md-4 col-sm-6">
+                      <div class="form-group">
+                        <label for="staff" class="form-label">NO of Installment</label>
+                        <input type="text" class="form-control" id="installment_no" name="installment_no" placeholder=""/>
+                      </div>
+                    </div>
+                    <div id="expirydate" class="col-lg-6 col-md-4 col-sm-6">
+                      <div class="form-group">
+                        <label for="expiry_date">Date</label>
+                        <input type="date" class="form-control" id="expiry_date" name="expiry_date" placeholder="">
+                      </div>
+                    </div>
+                     
+                      </div>
                       <div class="text-center mt-4 pt-2">
                         <label></label>
-                        <input type="submit" name="submit" value="Submit" class="btn btn-warning " tabindex="47" />
-                      </div>
+                        <input type="submit" name="submit" value="Submit" class="btn btn-warning " />
                       </div>
                   </form>
               </div>
 
               <!-- /.card-header -->
               <div class="card-body">
-              <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Active Staff </h1>
-          </div>
-          <div class="col-sm-6">            
-          </div>
-        </div>
-                <table id="tabledata" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
-                  <thead class="btn-warning">
-                    <tr>
-                      <th style="width:10%">Employee id</th>
-                      <th style="width:10%">Employee Name</th>
-                      <th style="width:8%">Father Name</th>
-                      <th style="width:10%">Gender</th>
-                      <th style="width:5%">Contact</th>
-                      
-                      <th style="width:8%">Father Contact</th>
-
-
-
-
-                      <!-- <th style="width:1%">View</th>
-                      <th style="width:1%">Edit</th>
-                      <th style="width:1%">Delete</th> -->
-
-
-
-                      <!-- <th class="no-sort" style="width:13%">Action</th> -->
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-
-                    foreach ($results as $data) {
-                    ?>
-                      <tr>
-
-                        <td>
-                          <?= $data->id ?>
-                        </td>
-
-                        <td>
-                          <?= $data->employel_name ?>
-
-                        </td>
-                        <td>
-                          <?= $data->father_name ?>
-
-                        </td>
-                        <td>
-                          <?= $data->gender ?>
-
-                        </td>
-                        <td>
-                          <?= $data->contact ?>
-
-                        </td>
-                        <td>
-                          <?= $data->father_contact ?>
-
-                        </td>
-
-
-                      
-
-
-
-                        <!-- <td class="">
-
-                          <form action="staff-show.php?CD=<?php echo $data->id; ?>" method="post">
-                            <button type="submit" class="btn btn-primary">Show</button>
-
-                          </form>
-
-                        </td>
-                        <td>
-                          <form action="left_staff_edit.php?CD=<?php echo $data->id; ?>" method="post">
-
-                            <button type="submit" class="btn btn-primary">Edit</button>
-
-                          </form>
-                        </td>
-                        <td>
-                          <form action="" method="post">
-                            <input type="hidden" name="deleteid" value="<?php echo $data->id; ?>">
-
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete it?')">Delete</button>
-                          </form>
-                        </td> -->
-                      </tr>
-                    <?php
-                    }
-                    ?>
-                  </tbody>
-                </table>
+          
+                
                 <!-- /.card-body -->
               </div>
             </div>

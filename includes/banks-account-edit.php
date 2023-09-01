@@ -27,7 +27,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 
 	if ( empty( $error ) ) {
 
-    echo"alassals".$table = BANKACCOUNT . " set `campus`='" . $campus . "', `bank_name`='" . $bank_name . "', `account_title`='" . $account_title . "',
+    $table = BANKACCOUNT . " set `campus`='" . $campus . "', `bank_name`='" . $bank_name . "', `account_title`='" . $account_title . "',
      `account_no`='" . $account_no . "', `branch_name`='" . $branch_name . "', `branch_code`='" . $branch_code . "' , `note`='" . $note . "'
       where id='" . $banks_account_id . "'";
 		$recodes = $conf->updateValue( $table );

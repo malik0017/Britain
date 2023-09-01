@@ -94,11 +94,16 @@ if (isset($_POST['load'])) {
 	$salaryid=array();
 	$campus = ($_POST['campus']);
 	$month_year = ($_POST['month_year']);
+    $mark_holiday=$conf->getHolidays($month_year);
 	
 	$sm_arr=explode('-',$month_year);
 	
 	$salary_month=$sm_arr[0];
 	$salary_year=$sm_arr[1];
+$shift_timming=$conf->staffShiftTimming();
+	
+	$workingdays=$conf->workingDays($mark_holiday,$salary_month,$salary_year);
+	
 	
 	$datasalary_exits=$conf->SalaryCheCreate($salary_month,$salary_year,$campus);
 	if (!empty($datasalary_exits)) {
@@ -113,7 +118,7 @@ if (isset($_POST['load'])) {
 	//  print_r($results);
 	}
 	else{
-	$sql = "SELECT s.*, d.employel_type as d_name
+	 $sql = "SELECT s.*, d.employel_type as d_name
 	FROM ".STAFF." as s
 	INNER JOIN ".EMPLOYETYE. " as d ON s.employel_type = d.id
 	WHERE s.campus = $campus AND s.IsActive = 1 AND s.IsLeft= 0";
@@ -121,7 +126,8 @@ if (isset($_POST['load'])) {
 	$results = $conf->QueryRun($sql);
 
 	}
-	
+	// print_r($results);
+	// exit;
 
 
 	// $results = $conf->fetchall(STAFF .  " as s INNER JOIN ". DEPARTMENT." as d ON d.id = s.department WHERE campus = $campus  And IsActive=1 ");
@@ -154,7 +160,8 @@ if (isset($_POST['load'])) {
 				
 				$advance=$advance[$int];
 				$security=$security[$int];
-		$numberOfLeave=1;
+				
+		// $numberOfLeave=1;
 		$installment_no=0;
 				  $basic_salary=$conf->BasicSalary($data);
 				 
@@ -167,12 +174,78 @@ if (isset($_POST['load'])) {
 				//   exit;
 				 // months pass in this function after 
 				
-				
-				  $leave_amount=round($conf->LeaveAmount($data,$numberOfLeave));
+				 $numberOfLeave=$conf->countLeave($workingdays,$shift_timming,$data);
+				  $leave_amount=$conf->LeaveAmount($data,$numberOfLeave);
+				  $leavedays=$leave_amount['day'];
+				$leaveamountdeduction=$leave_amount['salary'];
 				  $lunch_amount=$conf->LunchAmount($data);
 				  $security_data=$conf->securityCheck($data);
 				  $loans_check=$conf->LoansCheck($data);
-				
+					if($loans_check){
+						// echo "====LOan CHeCK".$loans_check."<br>";
+						if($advance<=$loans_check){
+							// echo "====Advance Is less than".$loans_check."<br>";
+							$loandata=$conf->QueryRun("SELECT * FROM " .EMPLOANS. " where emp_id=  ".$data."  AND is_completed = 0 AND parent_id=0");
+							//print_r($loandata);
+								$intallment_amount=0;
+								if($loandata !== null){
+								if(count($loandata)>0 )
+								{
+									// echo "====LOan CHeCK".$loans_check."<br>";
+									$loan_deduc=$advance;
+									foreach($loandata as $data1){
+										$installment_amount = $data1->installment;
+										//echo "==== maxid"."<br> $loan_deduc ---  $installment_amount";
+										//exit;
+										//  echo "====in looop"."<br>".$loan_deduc;
+										$max_id = $conf->single(EMPLOANS . " where id = (select MAX(id) as max_id from " . EMPLOANS . " where parent_id='".$data1->id."')", "*");
+										// print_r($max_id);
+										if(!empty($max_id)){
+											$installment_amount = $max_id->installment;
+										}
+                       
+											// echo "==== maxid"."<br> $loan_deduc ---  $installment_amount";
+											// exit;
+											if($loan_deduc>=$installment_amount){
+											
+												$date=date("Y-m-d");
+													$description='LoanRefund  BY'.$data.'against by loan id '.$data1->id.' Date '.$date.' amount is '.$installment_amount;
+													$vno = $conf->VoucherNo();
+													$vno = 'LR'.$vno;
+																											
+													$conf->FundsEntry(LOANFUNDS,$description, $installment_amount, $data, 'db',$data1->id,2, $date, $vno);
+													$amount=$data->installment;
+	
+													$loan_deduc=$loan_deduc-$installment_amount;
+											}elseif($loan_deduc<$installment_amount && ($loan_deduc>0)){
+												$description='LoanRefund  BY'.$data.'against by loan id '.$data1->id.' Date '.$date.' amount is '.$loan_deduc;
+													$vno = $conf->VoucherNo();
+													$vno = 'LR'.$vno;
+													
+													$conf->FundsEntry(LOANFUNDS,$description, $loan_deduc, $data, 'db',$data1->id,2, $date, $vno);
+													$loan_deduc=0;													
+											}
+
+											//--------update load is completed to 1
+											$iscompleted=$conf->QueryRun("SELECT customer_id, invoice_id,
+											SUM(CASE WHEN t_type = 'db' THEN t_amount ELSE 0 END) AS sum_db,
+											SUM(CASE WHEN t_type = 'cr' THEN t_amount ELSE 0 END) AS sum_cr
+									 		FROM " .LOANFUNDS. " where customer_id=  ".$data."  AND invoice_id=".$data1->id." ");
+											if($iscompleted->sum_db==$iscompleted->sum_cr){
+												$table = EMPLOANS . " set is_completed=1 where id='" . $data1->id . "'";
+												$recodes4 = $conf->updateValue( $table );
+											}
+
+											
+											
+										//}
+									}
+										
+								}		
+
+						}
+					}
+				}
 				  if( $lunch_amount ==  $lunch[$int]){
 					$lunch_amount=$lunch_amount;
 				  }else{
@@ -181,11 +254,17 @@ if (isset($_POST['load'])) {
 				  if($security_data==$security){
 					$security=$security_data;
 				  }
-				  if($loans_check==$advance){
-					$advance=$loans_check;
-				  }
+				//   if($loans_check==$advance){
+				// 	$advance=$loans_check;
+				//   }
 				  
-				  $gross_sal=$basic_salary+$lunch_amount+(int)$other-$leave_amount;
+				if($leavedays=='add'){
+					$gross_sal=$basic_salary+$lunch_amount+$leaveamountdeduction;
+
+				 }else{
+					$gross_sal=$basic_salary+$lunch_amount-$leaveamountdeduction;
+				 }
+				  
   
 				$staff_kids=$conf->KidsStaff($data);
 				// $income_tax=$conf->IncomeTax($gross_sal);
@@ -198,9 +277,19 @@ if (isset($_POST['load'])) {
 				// $loans_check=$conf->LoansCheck($data);
 				$net_salary= $gross_sal - (int)$advance - $pfunds - $income_tax - (int)$security;
 				// echo "====".$net_salary."<br>";
-				$data_post = array( 'emp_id' => $data, 'leaves' =>$numberOfLeave ,'campus_id' =>$data->campus,'basic_salary' => $basic_salary,'net_salary' => $net_salary,'d_loan' => $advance,'d_leave_amount' => $leave_amount,'a_lunch' => $lunch_amount,'free_kids' => $staff_kids,'d_income_tax' => $income_tax,'d_security' => $security,'d_provident_funds' => $pfunds,'installment_no' => $installment_no,'user_id' => $_SESSION[ 'user_reg' ],'salary_month' => $salary_month,'salary_year' => $salary_year,'other_allowance' => $other,'created_at' => $_SESSION['cDate'],'updated_at' => $_SESSION['cDate']);
+				$data_post = array( 'emp_id' => $data, 'leaves' =>$leavedays ,'campus_id' =>$data->campus,'basic_salary' => $basic_salary,'net_salary' => $net_salary,'d_loan' => $advance,'d_leave_amount' => $leaveamountdeduction,'a_lunch' => $lunch_amount,'free_kids' => $staff_kids,'d_income_tax' => $income_tax,'d_security' => $security,'d_provident_funds' => $pfunds,'installment_no' => $installment_no,'user_id' => $_SESSION[ 'user_reg' ],'salary_month' => $salary_month,'salary_year' => $salary_year,'other_allowance' => $other,'created_at' => $_SESSION['cDate'],'updated_at' => $_SESSION['cDate']);
 
 				$recodes = $conf->insert( $data_post, STAFFSALARY );
+				$table = STAFF . " set `basic_salary`='" . $basic_salary . "' where employel_id='" . $data . "'";
+    			$recodes1 = $conf->updateValue($table);
+				$date=date("Y-m-d");
+				$description='Funds BY'.$data->employel_name.' Date '.$date.' amount is '.$pfunds;
+				$vno = $conf->VoucherNo();
+				$vno = 'PF'.$vno;
+				
+				
+
+				$conf->FundsEntry(PROVIDENTFUNDS,$description, $pfunds, $data, 'cr',0,1, $date, $vno);
 				
 				 
 	}
@@ -344,20 +433,33 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
 				$int=0;
 				foreach( $results as $key => $data){
 					$int++;
-					$numberOfLeave=1;
+					// $numberOfLeave=1;
+					
 				  $basic_salary=$conf->BasicSalary($data->employel_id);
 				 // months pass in this function after 
-				  $leave_amount=round($conf->LeaveAmount($data->employel_id,$numberOfLeave));
+				 $numberOfLeave=$conf->countLeave($workingdays,$shift_timming,$data->employel_id);
+				 $leave_amount=$conf->LeaveAmount($data->employel_id,$numberOfLeave);
+				 $leavedays=$leave_amount['day'];
+				 $leaveamountdeduction=$leave_amount['salary'];
+				 if($leavedays=='add'){
+					$gross_sal=intval($basic_salary)+intval($lunch_amount)+intval($leaveamountdeduction);
+
+				 }else{
+					$gross_sal=intval($basic_salary)+intval($lunch_amount)-intval($leaveamountdeduction);
+				 }
+
 				  $lunch_amount=$conf->LunchAmount($data->employel_id);
 			
-				  $gross_sal=$basic_salary+$lunch_amount-$leave_amount;
+				 
   
 				$staff_kids=$conf->KidsStaff($data->employel_id);
 				$income_tax=$conf->IncomeTax($gross_sal);
 				$pfunds=$conf->ProvidentFunds($data->employel_id);
 				$security_data=$conf->securityCheck($data->employel_id);
 				$loans_check=$conf->LoansCheck($data->employel_id);
-				$net_salary= $gross_sal - $security_data['total'] - $pfunds - $income_tax -$loans_check;
+				
+				$loans_remaining=$conf->currentBalance(LOANFUNDS, $data->employel_id);
+				$net_salary= $gross_sal - $security_data - $pfunds - $income_tax -$loans_check;
 
 				
 				?>
@@ -370,17 +472,17 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
                         <td><input type="text"  id="incomebonus_<?php echo $int; ?>"class="changesNo"value="<?php echo "0"; ?>" name="income_bonus[]" >  </td>
 						<td> <span class="basic_salary_<?php echo $int; ?>" default="<?php echo  $basic_salary; ?>"><?php echo  $basic_salary; ?></span> </td>
                         <td><span class="c_month_remark_<?php echo $int; ?>">Allow</span> </td>
-						<td> <span class="day_<?php echo $int; ?>"><?php echo  $numberOfLeave; ?></span>  </td>
-                        <td>  <span class="leaves_<?php echo $int; ?>"><?php echo  $leave_amount; ?></span></td>
+						<td> <span class="day_<?php echo $int; ?>"><?php echo  $leavedays; ?></span>  </td>
+                        <td>  <span class="leaves_<?php echo $int; ?>"><?php echo  $leaveamountdeduction; ?></span></td>
 						<td> <input type="text"  id="lunch_<?php echo $int; ?>"class="changesNo" value="<?php echo $lunch_amount; ?>" name="lunch[]" >  </td>
                         <td> <span class="day_<?php echo $int; ?>"><?php echo  $staff_kids; ?></span>  </td>  </td>
 						<td> <input type="text"  id="other_<?php echo  $int; ?>"class="changesNo other" value="" name="other[]" > </td>
                         <td> <span class="gross_salary_<?php echo $int; ?>"><?php echo  $gross_sal; ?></span> </td>
 						<td>  <span class="income_tax_<?php echo $int; ?>"><?php echo  $income_tax; ?></span></td>
-                        <td>  <input type="text"  id="security_<?php echo $int; ?>"class="changesNo" value="<?php echo $data->security_data; ?>" name="security[]" ></td>
+                        <td>  <input type="text"  id="security_<?php echo $int; ?>"class="changesNo" value="<?php echo $security_data; ?>" name="security[]" ></td>
 						<td>  <span class="p_funds_<?php echo $int; ?>"><?php echo  $pfunds; ?></span></td>
-                        <td> <input type="text"  id="advance_<?php echo $int; ?>"class="changesNo" value="" name="advance[]" >  </td>
-						<td> <span class="advance_balance_<?php echo $int; ?>"><?php echo  '0'; ?></span> </td>
+                        <td> <input type="text"  id="advance_<?php echo $int; ?>"class="changesNo" value="<?php echo $loans_check; ?>" name="advance[]" >  </td>
+						<td> <span class="advance_balance_<?php echo $int; ?>"><?php echo  $loans_remaining; ?></span> </td>
 						<td> <span class="net_balance_<?php echo $int; ?>"><?php echo  $net_salary; ?></span> </td>
 						<td>  </td>
 						<td>  </td>

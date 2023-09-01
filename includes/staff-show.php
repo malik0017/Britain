@@ -17,18 +17,19 @@ $staff_id =  $_REQUEST[ 'CD' ] ;
 //  WHERE a.id = $staff_id";
  
 
- $sql = "SELECT a.*, e.employel_level, s.employel_type, p.campus_name, d.department, t.salary_type
+$sql = "SELECT a.*, e.employel_level, s.employel_type, p.campus_name, d.department, t.salary_type
         FROM ".STAFF." AS a
         INNER JOIN ".EMPLOYELEVEL." AS e ON a.employel_level = e.id
         INNER JOIN ".EMPLOYETYE." AS s ON a.employel_type = s.id
         INNER JOIN ".DEPARTMENT." AS d ON a.department = d.id
         INNER JOIN ".CAMPUStbl." AS p ON a.campus = p.id
-        INNER JOIN ".SALARY." AS t ON a.salary_type = t.salary_type
+        INNER JOIN ".SALARY." AS t ON a.salary_type = t.id
         WHERE a.id = $staff_id";
-        //  echo "qwwwwwwwwwww".$sql;
-        // print_r($sql);
+          echo "qwwwwwwwwwww".$sql;
+        //  print_r($sql);
         $results1 = $conf->QueryRun($sql);
         $results = $results1[0];
+        // print_r($results);
         //issues join campus ;
        
 
@@ -138,7 +139,7 @@ $staff_id =  $_REQUEST[ 'CD' ] ;
                      </div> 
                      <div class="d-flex">
                       <dt class="col-sm-6">Ded.Ratio:</dt>
-                      <dd class="col-sm-6"> <?php echo $results->ded_ration;  ?> </dd>
+                      <dd class="col-sm-6"> <?php echo $results->perdaydeduction;  ?> </dd>
                     </div>
                     <div class="d-flex">
                       <dt class="col-sm-6">Travelling Allowane:</dt>
@@ -156,7 +157,7 @@ $staff_id =  $_REQUEST[ 'CD' ] ;
                     </div>
                     <div class="d-flex">
                       <dt class="col-sm-6">P.Fund Deduction:</dt>
-                      <dd class="col-sm-6"> <?php echo $results->fund_duction;  ?> </dd>
+                      <dd class="col-sm-6"> <?php echo $results->providentfundratio;  ?> </dd>
                     </div>
                  
                 </div>
@@ -232,7 +233,7 @@ $staff_id =  $_REQUEST[ 'CD' ] ;
                                
                   <div class="d-flex">
                   <dt class="col-sm-6"> Starting salary :</dt>
-                  <dd class="col-sm-6"> <?php echo $results->starting_salary;  ?>  </dd>
+                  <dd class="col-sm-6"> <?php echo $results->startsalary;  ?>  </dd>
                    </div>
                   <!-- <div class="d-flex">
                   <dt class="col-sm-6">Employee Image:</dt>

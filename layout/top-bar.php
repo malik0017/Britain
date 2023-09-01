@@ -84,16 +84,44 @@
       <li class="nav-item"><a href="department-view" class="nav-link">Department</a></li>
       <li class="nav-item"><a href="salary-type-view" class="nav-link">Salary</a></li>
       <li class="nav-item"><a href="staff-confirmation" class="nav-link">Staff Confirmation</a></li>
+      <li class="nav-item"><a href="letf_staff_list" class="nav-link">Left Staff List</a></li>
       <li class="nav-item"><a href="letf_staff_ac_de" class="nav-link"> Staff Active & Deactive</a></li>
+               <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Transfer</a></li>
+      <li class="nav-item"><a href="shift-timing-view" class="nav-link mb-3">Shift Timing</a></li>
+
+
       <li class="nav-item"><a href="create_salary" class="nav-link">Create Salary</a></li>
       <li class="nav-item"><a href="holiday_mark" class="nav-link">Holiday Marks</a></li>
-      <li class="nav-item"><a href="increament_salary" class="nav-link">Increament Salary</a></li>
+      <li class="nav-item"><a href="salary-increament-view" class="nav-link">Increament Salary</a></li>
       <li class="nav-item"><a href="loan_allocation" class="nav-link">Loan Allocation</a></li>
+      <li class="nav-item"><a href="provident_funds_withdraw" class="nav-link">P Funds Withdraw</a></li>
+      <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Shift</a></li>
+      <li class="nav-item"><a href="staff_campus_transfer" class="nav-link mb-3">Staff Campus Shift</a></li>
+      <li class="nav-item"><a href="loan-alteration" class="nav-link">Loan Alteration</a></li>
+      <li class="nav-item"><a href="security-alteration" class="nav-link">Security Alteration</a></li>
             </ul>
            </li>
            <li class="nav-item"><a href="banks-view" class="nav-link">Banks</a></li>
            
-            <li class="nav-item"><a href="attendance-view" class="nav-link">Attendance</a></li>
+            
+
+            <li class="nav-item dropdown">
+            <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
+            class="nav-link">Attendance</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow " style="left: 0px; right: inherit; background-color:rgb(36, 79, 150);">
+            <li class="nav-item"><a href="attendance-view" class="nav-link">Student</a></li>
+            <li class="nav-item"><a href="attendance-upload" class="nav-link">Upload Attendance</a></li>
+           
+             <li class="nav-item"><a href="manual-attendance" class="nav-link">Manual Staff</a></li> 
+              
+             
+             
+            </ul>
+           </li>
+
+
+
+
             <li class="nav-item dropdown">
             <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
             class="nav-link">Reports</a>
@@ -110,7 +138,11 @@
       <li class="nav-item"><a href="transfer-out-list" class="nav-link">Student Transfer Out List</a></li>
       <li class="nav-item"><a href="transfer-in-list" class="nav-link">Student Transfer In List</a></li>
       <li class="nav-item"><a href="strength-sheet" class="nav-link">Strength Sheet</a></li>
+      <li class="nav-item"><a href="pro_fund_ledger" class="nav-link">Provident ledger</a></li>
+      <li class="nav-item"><a href="left-staff-report" class="nav-link">Left Staff Report</a></li>
+      <li class="nav-item"><a href="increament-salary-report" class="nav-link">Increament Salary Report</a></li>
             </ul>
+            
            </li>
             
            

@@ -53,7 +53,7 @@ console.log(basic_salary);
 // alert(basic_salary);
 var ded_ratio=Number(basic_salary)*12/365;
 var fund_duction=Number(basic_salary)*7.5/100;
-
+var security_deduct=Number(basic_salary)/2;
 //  var indexnum = $(this).attr("rownum");
 //  var actval = $(".actual_"+indexnum).val();
 //  var pkg = Number(actval) - Number(concession);
@@ -64,6 +64,7 @@ var fund_duction=Number(basic_salary)*7.5/100;
 //  }
           
            $("#ded_ration").val(Math.round(ded_ratio));
+           $("#security_ded").val(Math.round(security_deduct));
            $("#fund_duction").val(Math.round(fund_duction));
 
 // // alert(indexnum);
