@@ -1,17 +1,27 @@
 <?php
 if (isset($_POST['submit'])) {
   
-  $shift_title = ($_POST['shift_title']);
+  $ShiftName = ($_POST['ShiftName']);
 
-  $start_time = date("Y-m-d H:i:s", strtotime($_POST['start_time']));
-  $end_time = date("Y-m-d H:i:s", strtotime($_POST['end_time']));
+  $StartTime = date("H:i:s", strtotime($_POST['StartTime']));
+  $EndTime = date("H:i:s", strtotime($_POST['EndTime']));
+  $StartTime1 = date("H:i:s", strtotime($_POST['StartTime1']));
+  $EndTime1 = date("H:i:s", strtotime($_POST['EndTime1']));
+  $StartTime2 = date("H:i:s", strtotime($_POST['StartTime']));
+  $EndTime2 = date("H:i:s", strtotime($_POST['StartTime2']));
 
-
+  
   if (empty($error)) {
     $data_post = array(
-      'shift_title' => $shift_title,
-      'start_time' => $start_time,
-      'end_time' => $end_time,
+      'ShiftName' => $ShiftName,
+      'StartTime' => $StartTime,
+      'EndTime' => $EndTime,
+      'StartTime1' => $StartTime1,
+      'EndTime1' => $EndTime1,
+      'StartTime2' => $StartTime2,
+      'EndTime2' => $EndTime2,
+      'IsActive' => 1,
+      'IsWinter' => 0,
 
       'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime
     );
@@ -36,27 +46,53 @@ if (isset($_POST['submit'])) {
 
               <div class="card-body">
                 <div class="row">
-                  <div class="col-lg-6  col-md-6 col-sm-6">
+                  <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="form-group">
-                      <label for="shift_title"> Shift Title</label>
-                      <input type="text" class="form-control" id="shift_title" name="shift_title" tabindex="2" placeholder=""  value="<?php  ?>" required>
+                      <label for="ShiftName"> Shift Title</label>
+                      <input type="text" class="form-control" id="ShiftName" name="ShiftName" tabindex="2" placeholder=""  value="<?php  ?>" required>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="form-group">
+                      <label for="StartTime"> Start Timing</label>
+                      <input type="text" class="form-control" id="StartTime" name="StartTime" tabindex="2" placeholder=""  value="<?php  echo date('H:i'); ?>" required>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="form-group">
+                      <label for="EndTime"> End Timing</label>
+                      <input type="text" class="form-control" id="EndTime" name="EndTime" tabindex="3" placeholder=""   value="<?php  echo date('H:i'); ?>" required>
+                    </div>
+                  </div>
+                  </div>
+                 
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="form-group">
+                      <label for="StartTime1"> Start Timing</label>
+                      <input type="text" class="form-control" id="StartTime1" name="StartTime1" tabindex="2" placeholder=""  value="<?php  echo date('H:i'); ?>" required>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="form-group">
-                      <label for="start_time"> Start Timing</label>
-                      <input type="text" class="form-control" id="start_time" name="start_time" tabindex="2" placeholder=""  value="<?php  echo date('H:i'); ?>" required>
+                      <label for="EndTime1"> End Timing</label>
+                      <input type="text" class="form-control" id="EndTime1" name="EndTime1" tabindex="3" placeholder=""   value="<?php  echo date('H:i'); ?>" required>
                     </div>
                   </div>
-                  </div>
-                  <div class="row">
+                </div>
+                <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="form-group">
-                      <label for="end_time"> End Timing</label>
-                      <input type="text" class="form-control" id="end_time" name="end_time" tabindex="3" placeholder=""   value="<?php  echo date('H:i'); ?>" required>
+                      <label for="StartTime2"> Start Timing</label>
+                      <input type="text" class="form-control" id="StartTime2" name="StartTime2" tabindex="2" placeholder=""  value="<?php  echo date('H:i'); ?>" required>
                     </div>
                   </div>
-
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="form-group">
+                      <label for="EndTime2"> End Timing</label>
+                      <input type="text" class="form-control" id="EndTime2" name="EndTime2" tabindex="3" placeholder=""   value="<?php  echo date('H:i'); ?>" required>
+                    </div>
+                  </div>
                 </div>
                 <div class="text-center mt-5">
                   <input type="submit" name="submit" value="Submit" class="btn btn-warning " tabindex="44" />

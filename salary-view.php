@@ -10,7 +10,7 @@ include( 'pagesettings.php' );
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?=SITE_NAME?> | Create Salary</title>
+  <title><?=SITE_NAME?> | Salary view</title>
   <?php include 'layout/header.php'; ?>
 </head>
 <body class="hold-transition layout-top-nav">
@@ -24,10 +24,10 @@ include( 'pagesettings.php' );
       <div class="container">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Create Salary</h1>
+            <h1 class="m-0">Salary view</h1>
           </div>
           <div class="col-sm-6 mt-2">  
-          <a class="btn btn-warning float-right" href="salary-view.php">Back</a>
+          <!-- <a class="btn btn-warning float-right" href="check_salary.php">Back</a> -->
 
           </div>
         </div>
@@ -58,47 +58,21 @@ include( 'pagesettings.php' );
   rowid=id[1];
 	var income_bonus = $('#incomebonus_'+id[1]).val();
 
-  var lunch = $('#lunch_'+id[1]).val();
-  var other = $('#other_'+id[1]).val();
-  var advance = $('#advance_'+ rowid ).val();
-   var pfunds = $('#pfunds_'+id[1]).text();
-  var security = $('#security_'+id[1]).val();
-  console.log('p funds',pfunds);
-  console.log('Security',security);
-  if (advance.trim() == "") {
-      advance=0;
-  }
-  if (pfunds == "") {
-    pfunds=0;
-  }
-  if (security.trim() == "") {
-    security=0;
-  }
- 
- 
- 
- 
   var basic_salary=$('.basic_salary_'+rowid).attr('default');
-
-  var leave_amount=$('.leaves_'+rowid).text();
-  var income_tax=$('.income_tax_'+rowid).text();
-  var gross_salary=$('.gross_salary_'+rowid).text();
+  
   var basic_sal_after=Number(basic_salary)+Number(income_bonus);
+  
    $('.basic_salary_' + rowid).text(basic_sal_after);
+  
 
-   var lunch = $('#lunch_'+id[1]).val();
-   gross_salary_after=Number(basic_sal_after)-Number(leave_amount)+Number(lunch)+Number(other);
-   $('.gross_salary_' + rowid).text(gross_salary_after);
-
-   console.log('advance',advance);
-  console.log('Security',security);
-  console.log('p funds',security);
-  console.log('Security',security);
-   var net_salary= gross_salary - Number(advance)- Number(pfunds) - Number(income_tax) - Number(security);
-  //  
-  console.log('net salary',net_salary);
    
-   $('.net_balance_' + rowid).text(net_salary);
+
+
+
+  
+  //  
+   
+  //  $('.net_balance_' + rowid).text(net_salary);
 
 
 });

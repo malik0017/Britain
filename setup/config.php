@@ -2,7 +2,7 @@
 session_start();
 date_default_timezone_set('Asia/Karachi');
 include_once 'db-tables.php';
-error_reporting(0);
+error_reporting(-1);
 $cDateTime = date("Y-m-d H:i:s");
 
 $_SESSION['$cDateTime'] = date("Y-m-d H:i:s");
@@ -43,7 +43,7 @@ class config
     function fetchall($table)
     {
         $sql = "select * from $table";
-    //    echo $sql;
+        //   echo $sql;
         $result = mysqli_query($this->link, $sql);
         $arr = array();
         while ($rs = mysqli_fetch_object($result)) {
@@ -1829,21 +1829,16 @@ class config
        
          $basic_salary = $this->singlev( STAFF ." WHERE employel_id= $staff_id " );
 
-         $arr=array();
          
-            $oneday_salary=round($basic_salary->basic_salary*12/365);
-            $amount=round($oneday_salary*$number_leaves);
+         
+            $oneday_salary=$basic_salary->basic_salary*12/365;
+            $amount=$oneday_salary*$number_leaves;
             if($number_leaves==0){
-                $arr['day']='add';
-                $arr['salary']=$oneday_salary;
-            //    return  $oneday_salary;
+               return  $oneday_salary;
              }
              else{
-                $arr['day']=$number_leaves;
-                $arr['salary']=$amount;
-                // return $amount;
+                return $amount;
              }
-             return $arr;
             
     }
     public function LunchAmount($staff_id)
@@ -1903,45 +1898,42 @@ class config
     }
     public function securityCheck($id)
     {
-        $amount=0;
+        $arr=array();
         $securitydata=$this->QueryRun("SELECT * FROM " .EMPSECURITY. " where emp_id=  ".$id."  AND is_completed = 0");
-        if(!empty($securitydata)){
-
-            $paidsecurity=$this->QueryRun("SELECT SUM(t_amount)  as sum FROM " .SECURITYFUNDS. " where customer_id=  ".$id."  AND t_type = 'db'");
-            // print_r($paidsecurity);
-            if(!empty($resultArray[0]->sum)){
-                if($paidsecurity[0]->sum ==  $securitydata[0]->amount){
-                    echo "-----update-----";
-                    $table = EMPSECURITY . " set is_completed= 1 where id='" . $securitydata[0]->id . "'";
-		            $recodes = $this->updateValue( $table );
-                    //update record
-
-                    return 0;
-                }
-                $remaning=intval($paidsecurity[0]->sum) - intval($securitydata[0]->amount);
-                if($remaning >= $securitydata[0]->installment){
-                    echo "-----less-----";
-                    $amount=$securitydata[0]->installment;
-                }else{
-                    echo "-----greater---".$id."--.";
-                    $amount=$remaning;
-                }
-
-    
+        $total=0;
+        if($securitydata !== null){
+        if(count($securitydata)>0)
+        {
+            foreach($securitydata as $key =>$data){
+                $amount=$data->amount/1;
+                $total=$total + $amount;
+                $arr[$data->id]=$amount;
+                $arr['total']=$total;
+                // $arr[$data->id]=$data->id;
+                // $arr[1]=$id;
             }
-            else{
-                $amount=$securitydata[0]->installment;
-            }
-        }
-        else{
+            // print_r($arr);
+            // exit;
+            return $arr;
+
+        }else{
             return 0;
         }
-        // echo "-----".$amount;
-        return $amount;
-        
-        
+    }else{
+        return $arr;
+    }
 
-        
+        // $paid_security=$this->QueryRun("SELECT Sum(amount) as paid_security FROM " .EMPSECURITY. " WHERE emp_id=".$id." ");
+        // $staff_data = $this->BasicSalary($id);
+        // if($taff_data==$paid_security){
+        //     return 0;
+        // }else{
+        //     // echo "------===";
+        //     $lastrow=$this->QueryRun("SELECT * FROM " .EMPSECURITY. " ORDER BY id DESC
+        //     LIMIT 1");
+        //     return $lastrow[0]->amount;
+
+        // }
         
          
       
@@ -2015,384 +2007,17 @@ class config
 
 
     }
-    public function attendanceUpload($data)
-    {
-        $fh = fopen('upload/attendance/'.$data, 'r');
-        $attenData=array();
-        while ($line = fgets($fh)) {
-            $col = preg_split('/[\s]+/', trim($line));
-        
-            // Find the start of the name columns
-            $name_start_index = -1;
-            for ($i = 0; $i < count($col); $i++) {
-                if (preg_match('/[A-Za-z]/', $col[$i])) {
-                    $name_start_index = $i;
-                    break;
-                }
-            }
-            // $col = array("Column1Data", "Column2Data", "Column3Data","Column4Data", "Column5Data", "Column6Data"); 
-            // Combine the name columns
-            $name = "";
-            if ($name_start_index !== -1) {
-                $name = implode(" ", array_slice($col, $name_start_index));
-            }
-        
-            // Output other columns and the combined name
-            for ($i = 0; $i < $name_start_index; $i++) {
-            //   echo "----" . $col[$i];
-                  $attenData[$i] =$col[$i];   
-              }
-               
-              //  echo "----" . $name;
-             
-              $namestd=substr_replace($name ,"",-6);
-            //    echo "----".$namestd;
-              $attenData[6]=$namestd;
-            $lastdigit = substr($name, -5);
-            //  echo "==========".$lastdigit;
-            $j=7;
-            $datawithoutname=explode(' ',$lastdigit);
-            foreach($datawithoutname as $data){
-              $attenData[$j]=$data;
-        //   echo "---------------".$data;
-              $j++;
-            }
+    // public function loanBalanceRemaining($uid)
+    // {
+    //     $where = " id = (SELECT MAX(id) from " . LOANFUNDS . " where customer_id = '" . $uid . "' AND t_type ='db')";
+    //     $preRecord = $this->singlev(LOANFUNDS . " WHERE " . $where);
+    //     $balance = $preRecord->current_balance;
 
-            // echo"-----type-----.".$attenData['7'];
-            // echo "<br>";
-            //   foreach($name as $k){
-            // $lastElement = end(explode("-", $k));
-            // echo "-----".$lastElement;
-            //   }
-            // print_r($attenData);
-            $data_post = array( 'emp_id' => $attenData['0'],'date' =>$attenData['1'], 'time' => $attenData['2'], 'machine_id' =>$attenData['3'],'verify_mode' =>$attenData['4'],'name' =>$attenData['6'],'type'=>$attenData['7'],'user_id' => $_SESSION[ 'user_reg' ],'created_at' => $cDateTime);
-                $recodes = $this->insert( $data_post, ATTENDANCESTAFF );
-            // print_r($portrait_footer);
-            // print_r($portrait_header);
-        
-        
-               
-
-
-
-
-            echo "<br>";
-        }
-    
-        fclose($fh);
-        return $recodes;
-    }
-    public function staffShiftTimming(){
-        $shift_staff=array();
-        $sql = "SELECT sh.*,st.id ,st.employel_id,st.employel_type,st.grace_time
-                        FROM ".STAFF." as st
-                        INNER JOIN ".EMPLOYETYE. " as emt ON st.employel_type = emt.id
-                        INNER JOIN ".SHIFTS. " as sh ON emt.shift_id = sh.ShiftID
-                        WHERE st.IsActive=1 AND st.IsLeft = 0";
-                        // echo $sql;
-                $results = $this->QueryRun($sql);
-                if(!empty($results)){
-                    foreach($results as $res){
-                       
-                        $shift_staff[$res->employel_id]['shift_id']=$res->ShiftID;
-                        $shift_staff[$res->employel_id]['start_time']=$res->StartTime;
-                        $shift_staff[$res->employel_id]['end_time']=$res->EndTime;
-                        $shift_staff[$res->employel_id]['start_time1']=$res->StartTime1;
-                        $shift_staff[$res->employel_id]['end_time1']=$res->EndTime1;
-                        $shift_staff[$res->employel_id]['start_time2']=$res->StartTime2;
-                        $shift_staff[$res->employel_id]['end_time2']=$res->EndTime2;
-                        $shift_staff[$res->employel_id]['grace_time']=$res->grace_time;
-                        
-                        }
-
-                }
-                return $shift_staff;
-
-    }
-    public function getHolidays($month_year){
-        $holidays=array();
-        $hm_arr=explode('-',$month_year);
-	    $month=$hm_arr[0];
-	    $year=$hm_arr[1];
-        $mark_holidays = $this->fetchall(HOLIDAYMARK . " WHERE month = $month AND year = $year");
-        if(!empty($mark_holidays)){
-        foreach($mark_holidays as $dt){
-            $holidays[]=$dt->compete_date;
-
-        }
-        return $holidays;
-    }
-    return $holidays;
- }
- public function workingDays($holiday,$month,$year){
-
-     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-
-    $allDates = array();
-    $workingday=array();
-    for ($day = 1; $day <= $daysInMonth; $day++) {
-        
-        $formattedDay = sprintf("%02d", $day);
-        $formattedMonth = sprintf("%02d", $month); 
-        $date = "$year-$formattedMonth-$formattedDay";
-        $allDates[] = $date;
-    }
-   if(!empty($holiday)){
-
-    foreach($allDates as $date) {
-        if (!in_array($date, $holiday)) {
-           $workingday[]=$date;
-         
-        }
-        
-    }
-
-
-
-    
-    return $workingday;
-   }else{
-    return $allDates;
-   }
-   
-}
-public function countLeave($workingdays,$shift_timming,$emp_id){
-   
-
-    if(!empty($workingdays)){
-        $date=$workingdays[0];
-        $date_arr=explode('-',$date);
-	    $date=$date_arr[0];
-	    $month=$date_arr[1];
-        $year=$date_arr[2];
-        $deduction=0;
-        $in_miss=0;
-        $out_miss=0;
-        $short_leave=0;
-        $leave=0;
-        $late_arrival=0;
-        $early_depart=0;
-        $absent=0;
-
-        
-    foreach($workingdays as $data){
-
-        $day= date("l", strtotime($data));
-        
-        if($day=="Monday" || $day=="Tuesday" || $day=="Wednesday" || $day=="Thursday"){
-           
-            $start_time=$shift_timming[$emp_id]['start_time'];
-            $end_time=$shift_timming[$emp_id]['end_time'];
-           
-        }
-        else if($day=="Friday")
-        {
-
-            $start_time=$shift_timming[$emp_id]['start_time1'];
-            $end_time=$shift_timming[$emp_id]['end_time1'];
-           
-        }
-        else if($day=="Saturday" || $day=="Sunday") {
-            $start_time=$shift_timming[$emp_id]['start_time2'];
-            $end_time=$shift_timming[$emp_id]['end_time2']; 
-            
-         }
-        $res = $this->fetchall(ATTENDANCESTAFF . " where date= '".$data."' AND emp_id = $emp_id");
-        if(!empty($res)){
-         
-        $firstRecord = $res[0];
-        $lastRecord = $res[count($res) - 1];
-        $attendance_intime=0;
-        $attendance_outtime=0;
-
-
-        $start_time_10 = strtotime($start_time);
-        $new_start_time_10 = $start_time_10 + 600; 
-        
-        $start_time_grace_10 = date("H:i:s", $new_start_time_10);
-        
-        $end_time_10 = strtotime($end_time);
-        $new_end_time_10 = $end_time_10 - 600; 
-        
-        $end_time_grace_10 = date("H:i:s", $new_end_time_10);
-
-
-        $start_time_60 = strtotime($start_time);
-        $new_start_time_60 = $start_time_60 + 3600; 
-        
-        $start_time_grace_60 = date("H:i:s", $new_start_time_60);
-        
-        $end_time_60 = strtotime($end_time);
-        $new_end_time_60 = $end_time_60 - 3600; 
-        
-        $end_time_grace_60 = date("H:i:s", $new_end_time_60);
-
-       
-        
-        
-        $start_time_120 = strtotime($start_time);
-        $new_start_time_120 = $start_time_120 + 7200; 
-        
-        $start_time_grace_120 = date("H:i:s", $new_start_time_120);
-        
-        $end_time_120 = strtotime($end_time);
-        $new_end_time_120 = $end_time_120 - 7200; 
-        
-        $end_time_grace_120 = date("H:i:s", $new_end_time_120);
-
-
-       
-            if($firstRecord->type== "O"){
-               
-                $attendance_outtime=$firstRecord->time;
-                $out_time = strtotime($attendance_outtime);
-
-                if($out_time > $end_time_grace_10 && $out_time < $end_time_grace_60 ){
-                    $early_depart++;
-                }else if($out_time > $end_time_grace_60 && $out_time < $end_time_grace_120 ){
-                    $short_leave++;
-                }
-                elseif($out_time > $end_time_grace_120 ){
-                    $leave++;
-                }
-
-                $in_miss++;
-            }if($lastRecord->type == "I"){
-
-                $attendance_intime=$firstRecord->time;
-                $int_time = strtotime($attendance_intime);
-                if($int_time > $start_time_grace_10 && $int_time < $start_time_grace_60 ){
-                    $late_arrival++;
-                }else if($int_time > $start_time_grace_60 && $int_time < $start_time_grace_120 ){
-                    $short_leave++;
-                }
-                elseif($int_time > $start_time_grace_120 ){
-                    $leave++;
-                }
-
-
-
-                $out_miss++;
-            }
-            if($firstRecord->type== "I"){
-                $attendance_intime=$firstRecord->time;
-                $int_time = strtotime($attendance_intime);
-                if($int_time > $start_time_grace_10 && $int_time < $start_time_grace_60 ){
-                    $late_arrival++;
-                }else if($int_time > $start_time_grace_60 && $int_time < $start_time_grace_120 ){
-                    $short_leave++;
-                }
-                elseif($int_time > $start_time_grace_120 ){
-                    $leave++;
-                }
-
-                
-            }
-            if($lastRecord->type == "O"){
-                $attendance_outtime=$firstRecord->time;
-                $out_time = strtotime($attendance_outtime);
-
-                if($out_time > $end_time_grace_10 && $out_time < $end_time_grace_60 ){
-                    $early_depart++;
-                }else if($out_time > $end_time_grace_60 && $out_time < $end_time_grace_120 ){
-                    $short_leave++;
-                }
-                elseif($out_time > $end_time_grace_120 ){
-                    $leave++;
-                }
-
-            }
-            
-            
-           
-        } else{
-            $absent++;
-        }
-            
-
-          
-            
-        
-            
-        
-        
-        
-
-    }
-    if($late_arrival>0){
-        if($late_arrival%3==0){
-            $quotient = $late_arrival / 3;
-            $deduction=$deduction + $quotient;
-            $quotient=0;
-        }
-        else{
-        $deduction =  $deduction + floor($late_arrival / 3);	
-        }
-    }
-    
-    if($early_depart>0){
-        if($early_depart%3==0){
-            $quotient = $early_depart / 3;
-            $deduction=$deduction + $quotient;
-            $quotient=0;
-        }
-        else{
-        $deduction = $deduction + floor($early_depart / 3);	
-        }
-    }
-    
-    if($short_leave>0){
-        if($short_leave%2==0){
-            $quotient = $short_leave / 2;
-            $deduction=$deduction + $quotient;
-            $quotient=0;
-        }
-        else{
-        $deduction = $deduction + floor($short_leave / 2);	
-        }
-
-    }
-    
-    if($leave>0){
-        $deduction= $deduction+$leave; 
-    }
-    if($absent>0){
-        $deduction= $deduction+($absent*2); 
-    }
-    if($in_miss>0){
-        if($in_miss%2==0){
-            $quotient = $in_miss / 2;
-            $deduction=$deduction + $quotient;
-            $quotient=0;
-        }
-        else{
-        $deduction = $deduction + floor($in_miss / 2);	
-        }
-
-    }
-    if($out_miss>0){
-        if($out_miss%2==0){
-            $quotient = $out_miss / 2;
-            $deduction=$deduction + $quotient;
-            $quotient=0;
-        }
-        else{
-        $deduction = $deduction + floor($out_miss / 2);	
-        }
-
-    }
-   
-    }
-    // echo "--------".$deduction;
-    // exit;
-    return $deduction;
-
-    
-  
-}
-
-
-
+    //     if (empty($balance))
+    //         return 0;
+    //     // x
+    //     return $balance;
+    // }
     
 }
 

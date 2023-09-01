@@ -10,7 +10,7 @@ include( 'pagesettings.php' );
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?=SITE_NAME?> | Attendance Upload</title>
+  <title><?=SITE_NAME?> | Staff Campus Transfer Report</title>
   <?php include 'layout/header.php'; ?>
 </head>
 <body class="hold-transition layout-top-nav">
@@ -24,7 +24,9 @@ include( 'pagesettings.php' );
       <div class="container">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Attendance Upload </h1>
+          
+
+            <h1 class="m-0"> Staff Campus Transfer Report</h1>
           </div>
           <div class="col-sm-6">            
           </div>
@@ -42,17 +44,6 @@ include( 'pagesettings.php' );
 <!-- ./wrapper -->
 <?php include 'layout/footer-includes.php'; ?>
 
-
-<!-- <script type="text/javascript">
-    $("body").on("campus", "#staff_id, #date", function(){
-          let campus = $("#campus").val();
-          let staff = $("#staff_id").val();
-          let stdclass = $("#date").val();
-          console.log(`campus: ${campus} staff: ${staff_id} Date: ${date}`);       
-    });
-
-</script> -->
-
 <script type="text/javascript">
   $(document).ready(function() {
     $("#campus").on("change", function() {
@@ -62,7 +53,7 @@ include( 'pagesettings.php' );
       $.ajax({
         url: './get_staff_by_campus',
         type: "POST",
-        data: { campusId: campusId },
+        data: { campusId: campusId,campustransfer:'123asdfrth533' },
         success: function(response) {
           // alert(response);
           $('#staff_id').html(response); // Update staff dropdown with fetched options
@@ -72,26 +63,8 @@ include( 'pagesettings.php' );
 
       
     });
-    $("#staff_id").on("change", function() {
-      let empId = $(this).val();
-
-     // Send an AJAX request to fetch staff based on the selected campus
-      $.ajax({
-        url: './get_staff_by_campus',
-        type: "POST",
-        data: { empId: empId,loancheck:'123196hkqwg311271tg1' },
-        success: function(response) {
-          // alert(response);
-          $('#loan_id').html(response); // Update staff dropdown with fetched options
-        }
-      });
-
-
-      
-    });
   });
 </script>
-
 
 </body>
 </html>

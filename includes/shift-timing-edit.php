@@ -2,9 +2,13 @@
 $shift_id =  $_REQUEST[ 'CD' ] ;
 if ( isset( $_POST[ 'submit' ] ) ) {
 
-  $shift_title = ($_POST[ 'shift_title' ]);
-  $start_time = ($_POST[ 'start_time' ]);
-  $end_time = ($_POST[ 'end_time' ]);
+  $ShiftName = ($_POST[ 'ShiftName' ]);
+  $StartTime = ($_POST[ 'StartTime' ]);
+  $EndTime = ($_POST[ 'EndTime' ]);
+  $StartTime1 = ($_POST[ 'StartTime1' ]);
+  $EndTime1 = ($_POST[ 'EndTime1' ]);
+  $StartTime2 = ($_POST[ 'StartTime2' ]);
+  $EndTime2 = ($_POST[ 'EndTime2' ]);
 
 
   if(!$val->isSuccess()){
@@ -14,8 +18,11 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 	
   if ( empty( $error ) ) {
 
-    $table = SHIFTTIMING . " set `shift_title`='" . $shift_title . "', `start_time`='" . $start_time . "',
-     `end_time`='" . $end_time . "' where id='" . $shift_id . "'";
+     $table = SHIFTTIMING . " set `ShiftName`='" . $ShiftName . "', `StartTime`='" . $StartTime . "',
+     `EndTime`='" . $EndTime . "', `StartTime1`='" . $StartTime1 . "',
+     `EndTime1`='" . $EndTime1 . "', `StartTime2`='" . $StartTime2 . "',
+     `EndTime2`='" . $EndTime2. "'
+      where ShiftID='" . $shift_id . "'";
 
 		$recodes = $conf->updateValue( $table );
 
@@ -31,7 +38,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 		
 	}
 }
-$table_fetch = SHIFTTIMING . " where id='" . $shift_id . "'";
+$table_fetch = SHIFTTIMING . " where ShiftID='" . $shift_id . "'";
 $row = $conf->singlev( $table_fetch );
 ?>
 
@@ -45,24 +52,50 @@ $row = $conf->singlev( $table_fetch );
                 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="form-group">
-                                <label for="shift_title"> Shift Title</label>
-                                <input type="text" class="form-control" id="shift_title" value="<?php echo $row->shift_title; ?>" name="shift_title" tabindex="2" placeholder="" required>
+                                <label for="ShiftName"> Shift Title</label>
+                                <input type="text" class="form-control" id="ShiftName" value="<?php echo $row->ShiftName; ?>" name="ShiftName" tabindex="2" placeholder="" required>
                             </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="col-lg-4 col-md-6 col-sm-6">
                               <div class="form-group">
-                                <label for="start_time" > Shift Start</label>
-                                <input type="text" class="form-control" id="start_time" value="<?php echo $row->start_time; ?>" name="start_time" tabindex="3" placeholder="" required>                                          
+                                <label for="StartTime" > Shift Start</label>
+                                <input type="time" class="form-control" id="StartTime" value="<?php echo $row->StartTime; ?>" name="StartTime" tabindex="3" placeholder="" required>                                          
                              </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label for="EndTime"> Shift End </label>
+                                <input type="time" class="form-control" id="EndTime" value="<?php echo $row->EndTime; ?>" name="EndTime" tabindex="2" placeholder="" required>
+                            </div>
                             </div>
                             </div>
                             <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
+                              <div class="form-group">
+                                <label for="StartTime1" > Shift Start 01</label>
+                                <input type="time" class="form-control" id="StartTime1" value="<?php echo $row->StartTime1; ?>" name="StartTime1" tabindex="3" placeholder="" required>                                          
+                             </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="form-group">
-                                <label for="end_time"> Shift End </label>
-                                <input type="text" class="form-control" id="end_time" value="<?php echo $row->end_time; ?>" name="end_time" tabindex="2" placeholder="" required>
+                                <label for="EndTime1"> Shift End 01 </label>
+                                <input type="time" class="form-control" id="EndTime1" value="<?php echo $row->EndTime1; ?>" name="EndTime1" tabindex="2" placeholder="" required>
+                            </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                              <div class="form-group">
+                                <label for="StartTime2" > Shift Start 02</label>
+                                <input type="time" class="form-control" id="StartTime2" value="<?php echo $row->StartTime2; ?>" name="StartTime2" tabindex="3" placeholder="" required>                                          
+                             </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label for="EndTime2"> Shift End 02</label>
+                                <input type="time" class="form-control" id="EndTime2" value="<?php echo $row->EndTime2; ?>" name="EndTime2" tabindex="2" placeholder="" required>
                             </div>
                             </div>
                             </div>
