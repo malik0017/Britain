@@ -12,7 +12,8 @@ $acc = new accounts();
 
     if (isset($_REQUEST['id'])){
         $employeeid = $_REQUEST['id'];
-        //  echo $employeeid;
+        
+         echo $employeeid;
         $emplyee = $conf->singlev( EMPLOYETYE ." WHERE id= $employeeid " );
          echo $emplyee->lunch_allowance;
          
@@ -21,8 +22,9 @@ $acc = new accounts();
     if(isset($_REQUEST['sid'])){
         $arr=array();
         $staffid = $_REQUEST['sid'];
-        $staff = $conf->singlev( STAFF ." WHERE id= $staffid " );
-    
+        
+        $staff = $conf->singlev( STAFF ." WHERE employel_id= $staffid " );
+        //  exit;
         $empl_type = $conf->singlev( EMPLOYETYE ." WHERE id= $staff->employel_type" );
         // echo $staff->employel_type;
         // exit;
@@ -35,7 +37,7 @@ $acc = new accounts();
     }
     if (isset($_REQUEST['cid'])){
         $campus = $_REQUEST['cid'];
-//           echo $campus;
+          echo $campus;
 // exit;
         $sql = "SELECT a.*, c.class_name as class
                 FROM ".ASSIGNCLASS." as a

@@ -7,31 +7,45 @@ if (isset($_POST['deleteid'])) {
   //delete From Database
   //$flagmain = $conf->delme( CLASStbl, $deleteid, "id" );
   //delete From Frontened
-  $table = STAFF . " set `is_deleted`=1  where id='" . $deleteid . "'";
+  $table = INREAMENTSALARY . " set `is_deleted`=1  where id='" . $deleteid . "'";
   $flagmain = $conf->updateValue($table);
   if ($flagmain) {
     $success = "<p>Record   <strong>Deleted</strong> Successfully</p>";
   }
 }
-
+// echo $sql = "SELECT i.*, d.employel_name as s_name
+// 	FROM " . INREAMENTSALARY . " as i
+// 	INNER JOIN " . STAFF . " as d ON i.employee_name = d.emp_id
+// 	WHERE id = .$emp_id AND d.IsActive = 1 AND d.IsLeft = 0";
+	  
+// $results = $conf->QueryRun($sql);
+// print_r($results);
 
 $campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
 
 
 
-if (isset($_POST['search_by_campus'])) {
+if (isset($_POST['search_by_date'])) {
 
-   
+  
+  $date_from = $_POST['date'];
+  $date_to = $_POST['date_to'];
   $campus_id = $_POST['campus'];
+  $sql_query = "SELECT * FROM ".INREAMENTSALARY."  WHERE DATE(date) BETWEEN '" . $date_from . "' AND '" . $date_to . 
+"' AND campus_id=" . $campus_id . " order by id ASC";
+//  $sql_query;
+$results = $conf->QueryRun($sql_query);
 
-  $sql_query = "SELECT * FROM ".STAFF." where is_deleted = 0 && IsLeft= 1 &&  campus = $campus_id ";
+$empid= $results[0]->emp_id;
+// print_r($empid);
+// exit;
 
-  $results = $conf->QueryRun($sql_query);
-  // print_r($results);
-
-
-
-
+$sql = "SELECT i.*, s.employel_name as employee 
+ FROM " . INREAMENTSALARY . " as i
+ INNER JOIN " . STAFF . " as s ON i.emp_id = s.employel_id
+ WHERE i.emp_id = $empid ";
+	  
+	$results1 = $conf->QueryRun($sql);
 
 }
 
@@ -54,8 +68,26 @@ if (isset($_POST['search_by_campus'])) {
             <div class="card center1">
                           
                 <form name="post" action="" method="post">
+             
                   <div class="row py-3 ml-4">
-                  
+                  <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+
+                      <div class="form-group">
+                      <label class="select"> &nbsp; &nbsp;Date From &nbsp;</label>
+                        <input type="date" name="date_from" id="invoiceDate2"
+                               value="<?php echo date("Y-m-d", strtotime("-1 month")); ?>"
+                               class="form-control productSelection datepicker hasDatepicker">
+                      </div>
+                    </div>
+                                <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+
+                        <div class="form-group">
+                        <label class="select" style="font-weight:bold;"> Date To </label>
+                        <input type="date" name="date_to" id="invoiceDate2" value="<?php echo date("Y-m-d"); ?>"
+                               class="form-control productSelection datepicker hasDatepicker">
+                        </div>
+                        </div>
+                    
                     <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
 
                       <div class="form-group">
@@ -70,7 +102,7 @@ if (isset($_POST['search_by_campus'])) {
                     
                 
                     <div class="text-center my-auto mt-5">
-                              <input type="submit" name="search_by_campus" value="Search" class="btn btn-warning " tabindex="8"/>
+                              <input type="submit" name="search_by_date" value="Search" class="btn btn-warning " tabindex="8"/>
                       </div>
                   </div>
                       </form>
@@ -84,20 +116,20 @@ if (isset($_POST['search_by_campus'])) {
                               <input type="submit" name="print" value="Print" class="btn btn-warning " tabindex="8"/>
                              </div> -->
               <!-- /.card-header -->
-              <a class="btn btn-primary mt-3" style="float: right;" href="left-staff-print-report.php? cd=<?=$gen->IDencode($campus_id)?>"> Print</a>
+              <a class="btn btn-primary mt-3" style="float: right;" href="increament-salary-print-report.php? cd=<?=$gen->IDencode($campus_id)?>"> Print</a>
               <div class="card-body">
              
               
                 <table id="tabledata" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                   <thead class="btn-warning">
                     <tr>
-                      <!-- <th style="width:10%">Employee id</th> -->
+                      <th style="width:10%">Date</th>
                       <th style="width:10%">Employee Name</th>
-                      <th style="width:8%">Father Name</th>
-                      <th style="width:10%">Gender</th>
-                      <th style="width:5%">Contact</th>
+                      <th style="width:8%">Previos Salary</th>
+                      <th style="width:10%">Increament Amount</th>
+                      <th style="width:5%">New Salary</th>
                       
-                      <th style="width:8%">Father Contact</th>
+                      <!-- <th style="width:8%">Father Contact</th> -->
 
 
 
@@ -114,41 +146,31 @@ if (isset($_POST['search_by_campus'])) {
                   <tbody>
                     <?php
 
-                    foreach ($results as $data) {
+                    foreach ($results1 as $data) {
                     ?>
                       <tr>
 
-                        <!-- <td>
-                          <?= $data->id ?>
-                        </td> -->
+                    <td> 
+                          <?= $data->date ?>
+                        </td> 
 
                         <td>
-                          <?= $data->employel_name ?>
+                          <?= $data->employee ?>
 
                         </td>
                         <td>
-                          <?= $data->father_name ?>
+                          <?= $data->pre_salary ?>
 
                         </td>
                         <td>
-                          <?= $data->gender ?>
+                          <?= $data->increament_amount ?>
 
                         </td>
                         <td>
-                          <?= $data->contact ?>
+                          <?= $data->new_salary ?>
 
                         </td>
-                        <td>
-                          <?= $data->father_contact ?>
-
-                        </td>
-
-
-                      
-
-
-
-                       
+               
                       </tr>
                     <?php
                     }

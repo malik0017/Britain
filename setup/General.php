@@ -54,6 +54,9 @@
 	/*Encode*/		
 	public function IDencode($id)
 	{
+		// $aa=base64_encode($id.'--'.mt_rand(1000,999999));
+		// echo"wwwwwwwwwwww".$aa;
+		// exit;
 	return base64_encode($id.'--'.mt_rand(1000,999999));
 	}
 	

@@ -72,22 +72,26 @@ var fund_duction=Number(basic_salary)*7.5/100;
 });
 });
 
-$(document).on("change", ".salary", function(){
-	
-		employee_id=$(this).val();	
-    	
-		 $.get("ajax_allowance.php", {sid:employee_id}).done(function(data){
-        // alert(data);
-       //console.log(data);
+// $(document).on("change", ".salary", function(){
+	$(document).ready(function() {
+    $("#staff_id").on("change", function() {
+      alert('helllo');
+  employel_id=$(this).val();
+ 
+    	// console.log('helllo',employel_id);
+
+		 $.get("ajax_allowance.php", {sid:employel_id}).done(function(data){
+      // alert('amir');
       var res = JSON.parse(data);
-      //console.log(res.basic_salary);
-      // console.log(res);
+      // alert('amir');
+      // console.log(res.basic_salary);
+      //  console.log(res);
       $("#basic_salary").val(res.basic_salary);
       var basic_salary=res.basic_salary;
 
-var ded_ratio=Number(basic_salary)*12/365;
- var fund_duction=Number(basic_salary)*7.5/100;
-var lunch_allowance=res.lunch;
+    var ded_ratio=Number(basic_salary)*12/365;
+    var fund_duction=Number(basic_salary)*7.5/100;
+    var lunch_allowance=res.lunch;
 
           
            $("#ded_ration").val(Math.round(ded_ratio));
@@ -98,6 +102,7 @@ var lunch_allowance=res.lunch;
          });
 		
     });
+  });
 
 </script>
 
