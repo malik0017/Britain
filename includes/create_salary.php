@@ -273,7 +273,7 @@ $shift_timming=$conf->staffShiftTimming();
 				//   echo "=====Income bonus table======".$income_bonus;
 				// //   echo "=====luch amoun======".$lunch[$int];
 				//   exit;
-				// $security_data=$conf->securityCheck($data);
+				$security_data=$conf->securityCheck($data);
 				// $loans_check=$conf->LoansCheck($data);
 				$net_salary= $gross_sal - (int)$advance - $pfunds - $income_tax - (int)$security;
 				// echo "====".$net_salary."<br>";

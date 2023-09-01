@@ -2,7 +2,7 @@
   if (isset($_POST['submit'])) {
 	$selected_date_json=$_POST['selected_dates'];
 	$select_date = json_decode($selected_date_json);
-	print_r($select_date);
+	// print_r($select_date);
 	
 	foreach ($select_date as $key => $data) {
 		$dateconvert=explode('/',$data);
@@ -19,8 +19,12 @@
 		//$gen->redirecttime( 'class', '2000' );
   
 	  }
-	exit;
+	
   }
+ $holiday_mark= $conf->fetchall( HOLIDAYMARK  );
+ print_r($holiday_mark);
+
+
 
 ?>
 
