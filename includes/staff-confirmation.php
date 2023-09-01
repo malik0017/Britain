@@ -8,15 +8,16 @@ if (isset($_POST['submit'])) {
 
   $confirmation_date = ($_POST['confirmation_date']);
   $basic_salary = ($_POST['basic_salary']);
+  // echo"aaaaaaaaaaa".$basic_salary;
 
   $ded_ration = ($_POST['ded_ration']);
   $lunch_allowance = ($_POST['lunch_allowance']);
   $fund_duction = ($_POST['fund_duction']);
   $staff_confirmation = ($_POST['staff_confirmation']);
 
-  $table = STAFF . " set  `confirmation_date`='" . $confirmation_date . "', `lunch_allowance`='" . $lunch_allowance . "',
+ echo $table = STAFF . " set  `confirmation_date`='" . $confirmation_date . "', `lunch_allowance`='" . $lunch_allowance . "',
   `basic_salary`='" . $basic_salary . "', `ded_ration`='" . $ded_ration . "', `fund_duction`='" . $fund_duction . "',
-  `staff_confirmation`='" . $staff_confirmation . "' where id='" . $employel_name . "'";
+  `staff_confirmation`='" . $staff_confirmation . "' where employel_id='" . $employel_name . "'";
   $recodes = $conf->updateValue($table);
 
   if ($recodes == true) {
