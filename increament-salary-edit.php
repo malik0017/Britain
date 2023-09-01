@@ -24,7 +24,7 @@ include( 'pagesettings.php' );
       <div class="container">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Increament Salary</h1>
+            <h1 class="m-0">Increament Salary </h1>
           </div>
           <div class="col-sm-6 mt-2">  
           <a class="btn btn-warning float-right" href="salary-increament-view.php">Back</a>
