@@ -305,8 +305,8 @@ $max_id = $conf->single(STAFF, 'MAX(id) as max_id ');
                       <label for="shift"> Shift</label>
                       <select class="form-select form-control" id="shift" tabindex="14" name="shift" placeholder="">
                         <!-- <option selected>Select the Categories</option>                                     -->
-                        <option value="1">Morning</option>
-                        <option value="2">Evening</option>
+                        <option value="Morning">Morning</option>
+                        <option value="Evening">Evening</option>
 
 
                       </select>
