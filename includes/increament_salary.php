@@ -47,11 +47,11 @@ if (isset($_POST['load'])) {
 				
 				 
 		
-<<<<<<< HEAD
-				$data_post = array( 'emp_id' => $data, 'pre_salary' =>$pre_basic_salary ,'increament_amount' =>$income_bonus,'new_salary' => $basic_salary,'date' =>$_SESSION['cDate'],'user_id' => $_SESSION[ 'user_reg' ],'created_at' => $_SESSION['cDate']);
-=======
-				$data_post = array( 'emp_id' => $data, 'pre_salary' =>$pre_basic_salary ,'increament_amount' =>$income_bonus,'new_salary' => $basic_salary,'campus_id' => $campus,'date_from' =>$_SESSION['cDate'],'date_to' =>$_SESSION['cDate'],'user_id' => $_SESSION[ 'user_reg' ],'created_at' => $_SESSION['cDate']);
->>>>>>> main
+
+
+					$data_post = array( 'emp_id' => $data, 'pre_salary' =>$pre_basic_salary ,'increament_amount' =>$income_bonus,'new_salary' => $basic_salary,'campus_id' => $campus,'date' =>$_SESSION['cDate'],'user_id' => $_SESSION[ 'user_reg' ],'created_at' => $_SESSION['cDate']);
+
+
 
 				$recodes = $conf->insert( $data_post, INREAMENTSALARY );
 
