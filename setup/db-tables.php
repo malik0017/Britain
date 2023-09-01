@@ -39,7 +39,7 @@ define("FEEVOUCHER", "fee_voucher");
 define("FEEVOUCHERDETAIL", "fee-voucher-detail");
 
 define("STAFFSALARY", "staff_salary");
-define("SHIFTTIMING", "shift_timing")   ;
+define("SHIFTS", "shifts")   ;
 
 define("SALARYFUNDS", "tbl_salary_funds");
 
@@ -57,4 +57,6 @@ define("HOLIDAYMARK", "holidays_mark");
 define("INREAMENTSALARY", "increatment_salary");
 define("PROVIDENTFUNDS", "tbl_provident_funds");
 define("LOANFUNDS", "tbl_loan_funds");
+define("ATTENDANCESTAFF", "attendance_staff");
+define("SECURITYFUNDS", "tbl_security_funds");
 ?>
