@@ -151,6 +151,7 @@
 		//date_default_timezone_set('Asia/Karachi');
 			return date("F j, Y, g:i a", strtotime($date));
 	}
+	
 	public function date_for_user($date)
 	{
 		$date = date('d-m-Y',strtotime($date));
@@ -427,6 +428,62 @@
 
  return $text;
 }
+public function attendanceUpload($date)
+	{
+		$fh = fopen('upload/attendance/'.$date, 'r');
+$attenData=array();
+while ($line = fgets($fh)) {
+    $col = preg_split('/[\s]+/', trim($line));
+
+    // Find the start of the name columns
+    $name_start_index = -1;
+    for ($i = 0; $i < count($col); $i++) {
+        if (preg_match('/[A-Za-z]/', $col[$i])) {
+            $name_start_index = $i;
+            break;
+        }
+    }
+    // $col = array("Column1Data", "Column2Data", "Column3Data","Column4Data", "Column5Data", "Column6Data"); 
+    // Combine the name columns
+    $name = "";
+    if ($name_start_index !== -1) {
+        $name = implode(" ", array_slice($col, $name_start_index));
+    }
+
+    // Output other columns and the combined name
+    for ($i = 0; $i < $name_start_index; $i++) {
+          echo "----" . $col[$i];
+          $attenData[$i] =$col[$i];   
+      }
+       
+      //  echo "----" . $name;
+     
+      $namestd=substr_replace($name ,"",-6);
+       echo "----".$namestd;
+      $attenData[6]=$namestd;
+    $lastdigit = substr($name, -5);
+    //  echo "==========".$lastdigit;
+    $j=7;
+    $datawithoutname=explode(' ',$lastdigit);
+    foreach($datawithoutname as $data){
+      $attenData[$j]=$data;
+      echo "---------------".$data;
+      $j++;
+    }
+    echo "<br>";
+    //   foreach($name as $k){
+    // $lastElement = end(explode("-", $k));
+    // echo "-----".$lastElement;
+    //   }
+    print_r($attenData);
+
+
+	
+    echo "<br>";
+}
+fclose($fh);
+
+	}
 
 
 }
