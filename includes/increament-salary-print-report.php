@@ -2,20 +2,38 @@
 
 
 $campus_id = $gen->IDdecode($_REQUEST['cd']);
-// echo"wwwwwwwwww".$campus_id;
+//  echo"wwwwwwwwww".$campus_id;
 
-$cust_row = $conf->singlev(CAMPUStbl . " where id='" . $campus_id . "'");
+ $cust_row = $conf->singlev(CAMPUStbl . " where id='" . $campus_id . "'");
 
-$table_fetch = SITE_SETTINGS . " where id='1'";
+// $table_fetch = SITE_SETTINGS . " where id='1'";
 
-$row = $conf->singlev($table_fetch);
-// 
-// $blance = $conf->CustomerBalance($customer_id);
-// $sql_query = "SELECT * FROM " . STAFF;
-$sql_query = "SELECT * FROM ".STAFF." where is_deleted = 0 && IsLeft= 1 &&  campus = $campus_id ";
+// $row = $conf->singlev($table_fetch);
+// // 
+// // $blance = $conf->CustomerBalance($customer_id);
+// // $sql_query = "SELECT * FROM " . STAFF;
+ $sql_query = "SELECT * FROM ".INREAMENTSALARY." where campus_id = $campus_id ";
 
-//    echo $sql_query;
+    // echo $sql_query;
 $results = $conf->QueryRun($sql_query);
+
+$campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
+
+
+
+
+  
+
+ $empid= $results[0]->emp_id;
+
+
+ $sql = "SELECT i.*, s.employel_name as employee 
+ FROM " . INREAMENTSALARY . " as i
+ INNER JOIN " . STAFF . " as s ON i.emp_id = s.employel_id
+ WHERE i.emp_id = $empid ";
+	  
+	$results1 = $conf->QueryRun($sql);
+
 
 ?>
 <style>
@@ -184,7 +202,7 @@ $results = $conf->QueryRun($sql_query);
 
 
 <!-- <body onafterprint="window.location.href='customers.php'"> -->
-<body onafterprint="window.location.href='left-staff-report'">
+<body onafterprint="window.location.href='increament-salary-report'">
 <!-- <body> -->
 	<div class="col-md-12">
 		<?php include('includes/messages-display.php') ?>
@@ -224,7 +242,9 @@ $results = $conf->QueryRun($sql_query);
 
 
               <div class="clearfix"></div>
-			  <div class="row">
+
+<!-----Table ------>
+<div class="row">
 							<div class="col-xs-12" style="padding-left: 0px;">
 							<fieldset>
   								<!-- <legend><b>Customer:</b></legend> -->
@@ -245,72 +265,49 @@ $results = $conf->QueryRun($sql_query);
 
 						</div>
 
-<!-----Table ------>
-
 <div class="table-responsive">
             <!-- <table class="table table-hover" id="invoiceTable" style="width: 96%;">
                 <thead class="ust-th"> -->
 				<table id="" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                   <thead class="ust-th">
                 <tr>
-                   
-                    <!-- <th width="20%">Employee Id</th> -->
-                    <th width="35%">Employee Name</th>
-                    <th width="15%">Father Name</th>
-                    <th width="15%">Gender</th>
-                    <th width="15%">Contact</th>
-    <th width="15%"> Father Contact</th>
+				<th style="width:10%">Date</th>
+				<th style="width:10%">Employee Name</th>
+                      <th style="width:8%">Previos Salary</th>
+                      <th style="width:10%">Increament Amount</th>
+                      <th style="width:5%">New Salary</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
-                if ($results > 0) {
-                    foreach ($results as $itm_vr) {
-                       
-
-                        ?>
-                        <tr>
-                            
-                            <!-- <td>
-                                <?php echo $itm_vr->employel_id ?>
-                                </td> -->
-
-                            <td>
-                                <?php
-                                  echo $itm_vr->employel_name;
-                                
-                                ?>
-                            </td>
-        <td>
-                                <?php
-                                  echo $itm_vr->father_name;
-                                
-                                ?>
-                            </td>
-        <td>
-                                <?php
-                                  echo $itm_vr->gender;
-                                
-                                ?>
-                            </td>
-        <td>
-                                <?php
-                                  echo $itm_vr->contact;
-                                
-                                ?>
-                            </td>
-        <td>
-                                <?php
-                                  echo $itm_vr->father_contact;
-                                
-                                ?>
-                            </td>
-                           
-                            
-
-                            
-                        
-                        </tr>
+                if ($results1 > 0) {
+                   
+                    foreach ($results1 as $data) {
+						?>
+						  <tr>
+	
+							 <td>
+							  <?= $data->date ?>
+							</td> 
+	
+							<td>
+							  <?= $data->employee ?>
+	
+							</td>
+							<td>
+							  <?= $data->pre_salary ?>
+	
+							</td>
+							<td>
+							  <?= $data->increament_amount ?>
+	
+							</td>
+							<td>
+							  <?= $data->new_salary ?>
+	
+							</td>
+				   
+						  </tr>
                     <?php }
                 } ?>
                 </tbody>

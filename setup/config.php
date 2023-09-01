@@ -105,7 +105,7 @@ class config
 
     function updateValue($table)
     {
-       $sql = "update $table";
+        $sql = "update $table";
         if (mysqli_query($this->link, $sql)) {
 
             return true;
