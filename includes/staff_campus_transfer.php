@@ -37,12 +37,12 @@ if (isset($_POST['submit'])) {
       'emp_id' => $emp_id,
       'campus_id' => $prev_staff[0]->campus, 
 
-      'user_id' => $_SESSION['user_reg']
+      'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime
     );
     $recodes = $conf->insert($data, STAFF_TRANSFER);
     
-    // print_r($data);
-    // echo "<br>";
+    print_r($data);
+    echo "<br>";
     // echo "wqqqqqqqqqqqqqq" . $recodes;
     
   
@@ -52,11 +52,11 @@ if (isset($_POST['submit'])) {
       'campus_id' => $new_campus,
       'is_deleted' => ' 0 ',  
 
-      'user_id' => $_SESSION['user_reg']
+      'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime
     );
     $recodes = $conf->insert($data_post, STAFF_TRANSFER);
     // echo "<br>";
-    // print_r($data_post);
+    print_r($data_post);
 
   }
 
