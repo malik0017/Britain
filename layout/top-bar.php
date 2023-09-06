@@ -100,7 +100,27 @@
            </li>
            <li class="nav-item"><a href="banks-view" class="nav-link">Banks</a></li>
            
-            <li class="nav-item"><a href="attendance-view" class="nav-link">Attendance</a></li>
+            
+
+            <li class="nav-item dropdown">
+            <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
+            class="nav-link">Attendance</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow " style="left: 0px; right: inherit; background-color:rgb(36, 79, 150);">
+            <li class="nav-item"><a href="attendance-view" class="nav-link">Student</a></li>
+            <li class="nav-item"><a href="attendance-upload" class="nav-link">Upload Attendance</a></li>
+           
+             <li class="nav-item"><a href="manual-attendance" class="nav-link">Manual Staff</a></li>
+             <li class="nav-item"><a href="emp-leave-view" class="nav-link">Staff Leave</a></li>
+              <li class="nav-item"><a href="leave-type-view" class="nav-link">Leave Type</a></li> 
+              
+             
+             
+            </ul>
+           </li>
+
+
+
+
             <li class="nav-item dropdown">
             <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
             class="nav-link">Reports</a>
@@ -121,9 +141,11 @@
       <li class="nav-item"><a href="left-staff-report" class="nav-link">Left Staff Report</a></li>
       <li class="nav-item"><a href="active-staff-report" class="nav-link">Active Staff Report</a></li>
       <li class="nav-item"><a href="staff-campus-transfer-report" class="nav-link">Staff Transfer Report</a></li>
+
       <li class="nav-item"><a href="increament-salary-report" class="nav-link">Increament Salary Report</a></li>
       <li class="nav-item"><a href="salary-month-report" class="nav-link mb-2">Monthly Salary Report</a></li>
-      <li class="nav-item"><a href="salary-yearly-report" class="nav-link mb-2">Monthly Yearly Report</a></li>
+               <li class="nav-item"><a href="salary-yearly-report" class="nav-link mb-2">Yearly Report</a></li>
+              <li class="nav-item"><a href="holiday_report" class="nav-link">Holidays Report</a></li>
 
             </ul>
            </li>

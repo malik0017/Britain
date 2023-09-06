@@ -59,4 +59,9 @@ define("HOLIDAYMARK", "holidays_mark");
 define("INREAMENTSALARY", "increatment_salary");
 define("PROVIDENTFUNDS", "tbl_provident_funds");
 define("LOANFUNDS", "tbl_loan_funds");
+define("ATTENDANCESTAFF", "attendance_staff");
+define("SECURITYFUNDS", "tbl_security_funds");
+define("SHIFTTIMING", "shifts");
+define("LEAVE", "leave_type");
+define("EMPleave", "emp_leave_manuall");
 ?>

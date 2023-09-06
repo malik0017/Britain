@@ -1,7 +1,14 @@
 <?php 
+$currentDate = date('Y-m-d');
+
+	
+$oneMonthBefore = date('Y-m-d', strtotime('-1 month', strtotime($currentDate)));
+$oneMonthAfter = date('Y-m-d', strtotime('+1 month', strtotime($currentDate)));
   if (isset($_POST['submit'])) {
 	$selected_date_json=$_POST['selected_dates'];
 	$select_date = json_decode($selected_date_json);
+	
+	$conf->delete( HOLIDAYMARK, " compete_date BETWEEN '".$oneMonthBefore."' AND '".$oneMonthAfter."'" );
 	// print_r($select_date);
 	
 	foreach ($select_date as $key => $data) {
@@ -21,8 +28,20 @@
 	  }
 	
   }
- $holiday_mark= $conf->fetchall( HOLIDAYMARK  );
- print_r($holiday_mark);
+  
+  $sql = "SELECT compete_date FROM ".HOLIDAYMARK." WHERE compete_date BETWEEN '".$oneMonthBefore."' AND '".$oneMonthAfter."'";
+  $results = $conf->QueryRun($sql);
+ $dates=array();
+ if(!empty($results)){
+	foreach($results as $res){
+		$dates[]=$res->compete_date;
+	}
+	
+ }
+
+ $holiday_mark_json = json_encode($dates);
+
+
 
 
 

@@ -255,13 +255,13 @@ if (isset($_POST['load'])) {
 				$staff_kids=$conf->KidsStaff($data);
 				// $income_tax=$conf->IncomeTax($gross_sal);
 				$pfunds=$conf->ProvidentFunds($data);
-				//   echo "=====amount table======".$pfunds;
+				  echo "=====amount table======".$pfunds;
 				//   echo "=====Income bonus table======".$income_bonus;
 				// //   echo "=====luch amoun======".$lunch[$int];
 				//   exit;
 				$security_data=$conf->securityCheck($data);
 				// $loans_check=$conf->LoansCheck($data);
-				$net_salary= $gross_sal - (int)$advance - $pfunds - $income_tax - (int)$security;
+				$net_salary= $gross_sal - (int)$advance - (int)$pfunds - (int)$income_tax - (int)$security;
 				// echo "====".$net_salary."<br>";
 				$data_post = array( 
 				'emp_id' => $data, 'leaves' =>$numberOfLeave ,'campus_id' =>$campus,
@@ -459,7 +459,7 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
 						<td> <input type="text"  id="other_<?php echo  $int; ?>"class="changesNo other" value="" name="other[]" > </td>
                         <td> <span class="gross_salary_<?php echo $int; ?>"><?php echo  $gross_sal; ?></span> </td>
 						<td>  <span class="income_tax_<?php echo $int; ?>"><?php echo  $income_tax; ?></span></td>
-                        <td>  <input type="text"  id="security_<?php echo $int; ?>"class="changesNo" value="<?php echo $data->security_data; ?>" name="security[]" ></td>
+                        <td>  <input type="text"  id="security_<?php echo $int; ?>"class="changesNo" value="<?php echo $security_data; ?>" name="security[]" ></td>
 						<td>  <span class="p_funds_<?php echo $int; ?>"><?php echo  $pfunds; ?></span></td>
                         <td> <input type="text"  id="advance_<?php echo $int; ?>"class="changesNo" value="<?php echo $loans_check; ?>" name="advance[]" >  </td>
 						<td> <span class="advance_balance_<?php echo $int; ?>"><?php echo  $loans_remaining; ?></span> </td>

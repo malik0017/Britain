@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
   
 
 
-  $data_post = array('emp_id' => $staffId,'amount' => $amount,'date' => $expiryDate, 'installment_no' => $installment_no,'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime);
+  $data_post = array('emp_id' => $staffId,'amount' => $amount,'date' => $expiryDate, 'installment' => $installment_no,'user_id' => $_SESSION['user_reg'], 'created_at' => $cDateTime);
     $recodes = $conf->insert($data_post, EMPLOANS);
       $date=date("Y-m-d");
 				$description='Loan BY'.$staffId.' Date '.$date.' amount is '.$amount;
