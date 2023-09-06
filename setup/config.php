@@ -43,7 +43,7 @@ class config
     function fetchall($table)
     {
         $sql = "select * from $table";
-    //    echo $sql;
+        //   echo $sql;
         $result = mysqli_query($this->link, $sql);
         $arr = array();
         while ($rs = mysqli_fetch_object($result)) {
@@ -357,7 +357,7 @@ class config
     //------------New Functions by UST--------------
     public function QueryRun($sql, $prnt = '')
     {
-        //  echo $sql;
+        //   echo $sql;
         if ($prnt == 1)
             echo "<br>" . $sql;
            
@@ -384,7 +384,7 @@ class config
 
     public function delete($table, $where)
     {
-       
+    //    echo "DELETE FROM $table WHERE $where";
         $query = mysqli_query($this->link, "DELETE FROM $table WHERE $where") or
         die("Delete Error - DELETE FROM $table WHERE $where" . " - " . mysqli_query($this->link));
        
@@ -2197,48 +2197,66 @@ public function countLeave($workingdays,$shift_timming,$emp_id){
             $end_time=$shift_timming[$emp_id]['end_time2']; 
             
          }
-        $res = $this->fetchall(ATTENDANCESTAFF . " where date= '".$data."' AND emp_id = $emp_id");
+        //  echo "<br>"."----".$data."<br>";
+        //  echo "<br>"."----".$emp_id."<br>";
+         $res = $this->fetchall(ATTENDANCESTAFF . " where date= '".$data."' AND emp_id = $emp_id");
+       // $res = $this->fetchall(ATTENDANCESTAFF . " where date= '".$data."' AND emp_id = 4740");
+        // print_r($res);
         if(!empty($res)){
          
         $firstRecord = $res[0];
         $lastRecord = $res[count($res) - 1];
+        // print_r($firstRecord );
+        // echo "<br>";
+         // print_r($lastRecord );
         $attendance_intime=0;
         $attendance_outtime=0;
 
 
-        $start_time_10 = strtotime($start_time);
-        $new_start_time_10 = $start_time_10 + 600; 
-        
-        $start_time_grace_10 = date("H:i:s", $new_start_time_10);
-        
-        $end_time_10 = strtotime($end_time);
-        $new_end_time_10 = $end_time_10 - 600; 
-        
-        $end_time_grace_10 = date("H:i:s", $new_end_time_10);
+        $start_time = strtotime($start_time);
+        $end_time = strtotime($end_time);
+        $start_time_grace_10 = $start_time + 600;
+        $start_time_grace_60 = $start_time + 3600; 
+        $start_time_grace_120 = $start_time + 7200; 
+        $end_time_grace_10 = $end_time - 600; 
+        $end_time_grace_60 = $end_time - 3600;
+        $end_time_grace_120 = $end_time - 7200;
 
 
-        $start_time_60 = strtotime($start_time);
-        $new_start_time_60 = $start_time_60 + 3600; 
+
+        // $start_time_10 = strtotime($start_time);
+        // $new_start_time_10 = $start_time_10 + 600; 
         
-        $start_time_grace_60 = date("H:i:s", $new_start_time_60);
+        // $start_time_grace_10 = date("H:i:s", $new_start_time_10);
         
-        $end_time_60 = strtotime($end_time);
-        $new_end_time_60 = $end_time_60 - 3600; 
+        // $end_time_10 = strtotime($end_time);
+        // $new_end_time_10 = $end_time_10 - 600; 
         
-        $end_time_grace_60 = date("H:i:s", $new_end_time_60);
+        // $end_time_grace_10 = date("H:i:s", $new_end_time_10);
+
+
+        // $start_time_60 = strtotime($start_time);
+        // $new_start_time_60 = $start_time_60 + 3600; 
+        
+        // $start_time_grace_60 = date("H:i:s", $new_start_time_60);
+        
+        // $end_time_60 = strtotime($end_time);
+        // $new_end_time_60 = $end_time_60 - 3600; 
+        
+        // $end_time_grace_60 = date("H:i:s", $new_end_time_60);
 
        
         
         
-        $start_time_120 = strtotime($start_time);
-        $new_start_time_120 = $start_time_120 + 7200; 
+        // $start_time_120 = strtotime($start_time);
+        // $new_start_time_120 = $start_time_120 + 7200; 
         
-        $start_time_grace_120 = date("H:i:s", $new_start_time_120);
+        // $start_time_grace_120 = date("H:i:s", $new_start_time_120);
         
-        $end_time_120 = strtotime($end_time);
-        $new_end_time_120 = $end_time_120 - 7200; 
+        // $end_time_120 = strtotime($end_time);
+        // $new_end_time_120 = $end_time_120 - 7200; 
         
-        $end_time_grace_120 = date("H:i:s", $new_end_time_120);
+        // $end_time_grace_120 = date("H:i:s", $new_end_time_120);
 
 
        
@@ -2247,58 +2265,192 @@ public function countLeave($workingdays,$shift_timming,$emp_id){
                 $attendance_outtime=$firstRecord->time;
                 $out_time = strtotime($attendance_outtime);
 
-                if($out_time > $end_time_grace_10 && $out_time < $end_time_grace_60 ){
+                if($out_time < $end_time_grace_10 && $out_time > $end_time_grace_60 ){
+                    // echo "=====ED ====".$early_depart."<br>";
                     $early_depart++;
-                }else if($out_time > $end_time_grace_60 && $out_time < $end_time_grace_120 ){
-                    $short_leave++;
+                }else if($out_time < $end_time_grace_60 && $out_time > $end_time_grace_120 ){
+                    // echo "=====Short Leave====".$short_leave."<br>";
+                    // $short_leave++;
+                    $shortresult=$this->shortLeaveCheck($data,$emp_id);
+                    if(!empty($shortresult)){
+        
+                        if($shortresult['short_leave']>0){
+                            $short_leave=$short_leave+$shortresult['short_leave'];
+        
+                        }else if($shortresult['leave']>0){
+                            $leave=$leave+$shortresult['leave'];
+        
+                        }else if($shortresult['absent']>0){
+                                $absent=$absent+$shortresult['absent'];
+        
+                        }
+                    }
                 }
-                elseif($out_time > $end_time_grace_120 ){
-                    $leave++;
+                elseif($out_time < $end_time_grace_120 ){
+                    // echo "=====Leave====".$leave."<br>";
+                    // $leave++;
+                    $shortresult=$this->shortLeaveCheck($data,$emp_id);
+                    if(!empty($shortresult)){
+        
+                        if($shortresult['short_leave']>0){
+                            $short_leave=$short_leave+$shortresult['short_leave'];
+        
+                        }else if($shortresult['leave']>0){
+                            $leave=$leave+$shortresult['leave'];
+        
+                        }else if($shortresult['absent']>0){
+                                $absent=$absent+$shortresult['absent'];
+        
+                        }
+                    }
                 }
 
                 $in_miss++;
             }if($lastRecord->type == "I"){
 
-                $attendance_intime=$firstRecord->time;
+                $attendance_intime=$lastRecord->time;
                 $int_time = strtotime($attendance_intime);
                 if($int_time > $start_time_grace_10 && $int_time < $start_time_grace_60 ){
+                    // echo "=====Late Arrival ====".$late_arrival."<br>";
                     $late_arrival++;
                 }else if($int_time > $start_time_grace_60 && $int_time < $start_time_grace_120 ){
-                    $short_leave++;
+                    //  echo "=====Short Leave====".$short_leave."<br>";
+                    // $short_leave++;
+                    $shortresult=$this->shortLeaveCheck($data,$emp_id);
+                    if(!empty($shortresult)){
+        
+                        if($shortresult['short_leave']>0){
+                            $short_leave=$short_leave+$shortresult['short_leave'];
+        
+                        }else if($shortresult['leave']>0){
+                            $leave=$leave+$shortresult['leave'];
+        
+                        }else if($shortresult['absent']>0){
+                                $absent=$absent+$shortresult['absent'];
+        
+                        }
+                    }
                 }
                 elseif($int_time > $start_time_grace_120 ){
-                    $leave++;
+                    //  echo "=====Leave==in =Iast Record In=".$leave."<br>";
+                    // $leave++;
+                    $shortresult=$this->shortLeaveCheck($data,$emp_id);
+                    if(!empty($shortresult)){
+        
+                        if($shortresult['short_leave']>0){
+                            $short_leave=$short_leave+$shortresult['short_leave'];
+        
+                        }else if($shortresult['leave']>0){
+                            $leave=$leave+$shortresult['leave'];
+        
+                        }else if($shortresult['absent']>0){
+                                $absent=$absent+$shortresult['absent'];
+        
+                        }
+                    }
                 }
 
 
-
+                //  echo "=====out miss====".$out_miss."<br>";
                 $out_miss++;
             }
             if($firstRecord->type== "I"){
                 $attendance_intime=$firstRecord->time;
                 $int_time = strtotime($attendance_intime);
                 if($int_time > $start_time_grace_10 && $int_time < $start_time_grace_60 ){
+                    //  echo "=====Late Arrival ====".$late_arrival."<br>";
                     $late_arrival++;
                 }else if($int_time > $start_time_grace_60 && $int_time < $start_time_grace_120 ){
-                    $short_leave++;
+                    //  echo "=====Short Leave====".$short_leave."<br>";
+                    // $short_leave++;
+                    $shortresult=$this->shortLeaveCheck($data,$emp_id);
+                    if(!empty($shortresult)){
+        
+                        if($shortresult['short_leave']>0){
+                            $short_leave=$short_leave+$shortresult['short_leave'];
+        
+                        }else if($shortresult['leave']>0){
+                            $leave=$leave+$shortresult['leave'];
+        
+                        }else if($shortresult['absent']>0){
+                                $absent=$absent+$shortresult['absent'];
+        
+                        }
+                    }
                 }
                 elseif($int_time > $start_time_grace_120 ){
-                    $leave++;
+                    // echo "----init--- time---".$int_time."<br>";
+                    // echo "---- grace time --- time---".$start_time_grace_120."<br>";
+                    //  echo "=====Leave= = in First record IN I==".$leave."<br>";
+                     $shortresult=$this->shortLeaveCheck($data,$emp_id);
+                     if(!empty($shortresult)){
+         
+                         if($shortresult['short_leave']>0){
+                             $short_leave=$short_leave+$shortresult['short_leave'];
+         
+                         }else if($shortresult['leave']>0){
+                             $leave=$leave+$shortresult['leave'];
+         
+                         }else if($shortresult['absent']>0){
+                                 $absent=$absent+$shortresult['absent'];
+         
+                         }
+                     }
+                    // $leave++;
                 }
 
                 
             }
             if($lastRecord->type == "O"){
-                $attendance_outtime=$firstRecord->time;
+                // echo "-----shahrab----";
+                $attendance_outtime=$lastRecord->time;
                 $out_time = strtotime($attendance_outtime);
-
-                if($out_time > $end_time_grace_10 && $out_time < $end_time_grace_60 ){
+                // $date_10=date("H:i:s", $end_time_grace_10);
+                // $date_10=date("H:i:s", $end_time_grace_10);
+                // $date_60=date("H:i:s", $end_time_grace_60);
+                // $date_120=date("H:i:s", $end_time_grace_120);
+                // echo "====out time====".$out_time."<br>"."========".$attendance_outtime."<br>";
+                // echo "====end  time 10====".$end_time_grace_10."========".$date_10."<br>";
+                // echo "====end  time 60====".$end_time_grace_60."========".$date_60."<br>";
+                // echo "====end  time 120====".$end_time_grace_120."========".$date_120."<br>";
+                if($out_time < $end_time_grace_10 && $out_time < $end_time_grace_60 ){
+                    echo "=====ED====".$early_depart."<br>";
                     $early_depart++;
-                }else if($out_time > $end_time_grace_60 && $out_time < $end_time_grace_120 ){
-                    $short_leave++;
+                }else if($out_time < $end_time_grace_60 && $out_time < $end_time_grace_120 ){
+                    echo "=====Short Leave====".$short_leave."<br>";
+                    $shortresult=$this->shortLeaveCheck($data,$emp_id);
+                    if(!empty($shortresult)){
+        
+                        if($shortresult['short_leave']>0){
+                            $short_leave=$short_leave+$shortresult['short_leave'];
+        
+                        }else if($shortresult['leave']>0){
+                            $leave=$leave+$shortresult['leave'];
+        
+                        }else if($shortresult['absent']>0){
+                                $absent=$absent+$shortresult['absent'];
+        
+                        }
+                    }
+                    // $short_leave++;
                 }
-                elseif($out_time > $end_time_grace_120 ){
-                    $leave++;
+                elseif($out_time < $end_time_grace_120 ){
+                    echo "=====Leave====".$leave."<br>";
+                    $shortresult=$this->shortLeaveCheck($data,$emp_id);
+                    if(!empty($shortresult)){
+        
+                        if($shortresult['short_leave']>0){
+                            $short_leave=$short_leave+$shortresult['short_leave'];
+        
+                        }else if($shortresult['leave']>0){
+                            $leave=$leave+$shortresult['leave'];
+        
+                        }else if($shortresult['absent']>0){
+                                $absent=$absent+$shortresult['absent'];
+        
+                        }
+                    }
+                    // $leave++;
                 }
 
             }
@@ -2306,7 +2458,44 @@ public function countLeave($workingdays,$shift_timming,$emp_id){
             
            
         } else{
-            $absent++;
+            $shortresult=$this->shortLeaveCheck($data,$emp_id);
+            if(!empty($shortresult)){
+
+                if($shortresult['short_leave']>0){
+                    $short_leave=$short_leave+$shortresult['short_leave'];
+
+                }else if($shortresult['leave']>0){
+                    $leave=$leave+$shortresult['leave'];
+
+                }else if($shortresult['absent']>0){
+                        $absent=$absent+$shortresult['absent'];
+
+                }
+            }
+            // echo "=====Absent====".$absent."<br>";
+            // $leaveres = $this->fetchall(EMPleave . " where '".$data."' BETWEEN date_from AND date_to AND emp_id = $emp_id");
+           
+            // if(count($leaveres)>0){
+            //     foreach($leaveres as $resl)
+            //     {
+                    
+            //         if($resl->is_paid==0){
+            //             if($resl->leave_type_id==1){
+            //                 $short_leave++;
+                        
+            //             }else{
+            //                 $leave++;
+            //             }
+
+            //         }
+            //     }
+
+            // }else{
+            //     $absent++;
+            // }
+
+            
+            
         }
             
 
@@ -2383,12 +2572,49 @@ public function countLeave($workingdays,$shift_timming,$emp_id){
     }
    
     }
-    // echo "--------".$deduction;
+    //  echo "--------".$deduction;
     // exit;
     return $deduction;
 
     
   
+}
+public function shortLeaveCheck($data,$emp_id){
+    $resleave=array();
+    $short_leave=0;
+    $leave0=0;
+    $leaveres = $this->fetchall(EMPleave . " where '".$data."' BETWEEN date_from AND date_to AND emp_id = $emp_id");
+    // print_r($leaveres);
+           
+    if(!empty($leaveres)){
+       
+        foreach($leaveres as $resl)
+        {
+           
+            if($resl->is_paid==0){
+              
+                if($resl->leave_type_id==1){
+                   
+                    $short_leave++;
+                    $resleave['short_leave']=$short_leave;
+                
+                }else{
+                  
+                    $leave++;
+                    $resleave['leave']=$leave;
+                }
+
+            }
+        }
+
+    }else{
+        $absent++;
+        $resleave['absent']=$absent;
+        
+    }
+    
+    return  $resleave;
+
 }
 
 

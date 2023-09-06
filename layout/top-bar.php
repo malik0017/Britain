@@ -113,8 +113,8 @@
             <li class="nav-item"><a href="attendance-upload" class="nav-link">Upload Attendance</a></li>
            
              <li class="nav-item"><a href="manual-attendance" class="nav-link">Manual Staff</a></li> 
-              
-             
+               <li class="nav-item"><a href="emp-leave-view" class="nav-link">Staff Leave</a></li>
+              <li class="nav-item"><a href="leave-type-view" class="nav-link">Leave Type</a></li>
              
             </ul>
            </li>
@@ -141,6 +141,7 @@
       <li class="nav-item"><a href="pro_fund_ledger" class="nav-link">Provident ledger</a></li>
       <li class="nav-item"><a href="left-staff-report" class="nav-link">Left Staff Report</a></li>
       <li class="nav-item"><a href="increament-salary-report" class="nav-link">Increament Salary Report</a></li>
+      <li class="nav-item"><a href="holiday_report" class="nav-link">Holidays Report</a></li>
             </ul>
             
            </li>

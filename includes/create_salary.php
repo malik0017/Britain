@@ -269,13 +269,13 @@ $shift_timming=$conf->staffShiftTimming();
 				$staff_kids=$conf->KidsStaff($data);
 				// $income_tax=$conf->IncomeTax($gross_sal);
 				$pfunds=$conf->ProvidentFunds($data);
-				//   echo "=====amount table======".$pfunds;
+				  echo "=====amount table======".$pfunds;
 				//   echo "=====Income bonus table======".$income_bonus;
 				// //   echo "=====luch amoun======".$lunch[$int];
 				//   exit;
 				$security_data=$conf->securityCheck($data);
 				// $loans_check=$conf->LoansCheck($data);
-				$net_salary= $gross_sal - (int)$advance - $pfunds - $income_tax - (int)$security;
+				$net_salary= $gross_sal - (int)$advance - (int)$pfunds - (int)$income_tax - (int)$security;
 				// echo "====".$net_salary."<br>";
 				$data_post = array( 'emp_id' => $data, 'leaves' =>$leavedays ,'campus_id' =>$data->campus,'basic_salary' => $basic_salary,'net_salary' => $net_salary,'d_loan' => $advance,'d_leave_amount' => $leaveamountdeduction,'a_lunch' => $lunch_amount,'free_kids' => $staff_kids,'d_income_tax' => $income_tax,'d_security' => $security,'d_provident_funds' => $pfunds,'installment_no' => $installment_no,'user_id' => $_SESSION[ 'user_reg' ],'salary_month' => $salary_month,'salary_year' => $salary_year,'other_allowance' => $other,'created_at' => $_SESSION['cDate'],'updated_at' => $_SESSION['cDate']);
 
@@ -480,7 +480,7 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
                         <td> <span class="gross_salary_<?php echo $int; ?>"><?php echo  $gross_sal; ?></span> </td>
 						<td>  <span class="income_tax_<?php echo $int; ?>"><?php echo  $income_tax; ?></span></td>
                         <td>  <input type="text"  id="security_<?php echo $int; ?>"class="changesNo" value="<?php echo $security_data; ?>" name="security[]" ></td>
-						<td>  <span class="p_funds_<?php echo $int; ?>"><?php echo  $pfunds; ?></span></td>
+						<td>  <span id="p_funds_<?php echo $int; ?>" class="p_funds_<?php echo $int; ?>"><?php echo  $pfunds; ?></span></td>
                         <td> <input type="text"  id="advance_<?php echo $int; ?>"class="changesNo" value="<?php echo $loans_check; ?>" name="advance[]" >  </td>
 						<td> <span class="advance_balance_<?php echo $int; ?>"><?php echo  $loans_remaining; ?></span> </td>
 						<td> <span class="net_balance_<?php echo $int; ?>"><?php echo  $net_salary; ?></span> </td>

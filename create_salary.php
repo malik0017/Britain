@@ -61,9 +61,9 @@ include( 'pagesettings.php' );
   var lunch = $('#lunch_'+id[1]).val();
   var other = $('#other_'+id[1]).val();
   var advance = $('#advance_'+ rowid ).val();
-   var pfunds = $('#pfunds_'+id[1]).text();
+   var pfunds = $('.p_funds'+ rowid ).text();
   var security = $('#security_'+id[1]).val();
-  console.log('p funds',pfunds);
+  console.log('p funds'+rowid+'======'+pfunds);
   console.log('Security',security);
   if (advance.trim() == "") {
       advance=0;
@@ -76,7 +76,7 @@ include( 'pagesettings.php' );
   }
  
  
- 
+ console.log('helllo',pfunds);
  
   var basic_salary=$('.basic_salary_'+rowid).attr('default');
 
@@ -90,11 +90,11 @@ include( 'pagesettings.php' );
    gross_salary_after=Number(basic_sal_after)-Number(leave_amount)+Number(lunch)+Number(other);
    $('.gross_salary_' + rowid).text(gross_salary_after);
 
-   console.log('advance',advance);
-  console.log('Security',security);
-  console.log('p funds',security);
-  console.log('Security',security);
-   var net_salary= gross_salary - Number(advance)- Number(pfunds) - Number(income_tax) - Number(security);
+  //  console.log('advance',advance);
+  // console.log('Security',security);
+  // console.log('p funds',security);
+  // console.log('Security',security);
+   var net_salary= gross_salary_after - Number(advance)- Number(pfunds) - Number(income_tax) - Number(security);
   //  
   console.log('net salary',net_salary);
    
