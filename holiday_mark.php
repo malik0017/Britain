@@ -13,7 +13,7 @@ include( 'pagesettings.php' );
   <title><?=SITE_NAME?> | Holiday Mark</title>
   <?php include 'layout/header.php'; ?>
   <!-- <link rel="stylesheet" href="css/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="calender/css/jquery-ui.multidatespicker.css">
+    <link rel="stylesheet" href="css/calender/css/jquery-ui.multidatespicker.css">
     <link rel="stylesheet" href="css/calender/css/mobiscroll.javascript.min.css">
     <link rel="stylesheet" href="css/calender/css/jquery-ui.css">
     
@@ -56,40 +56,94 @@ include( 'pagesettings.php' );
     <script src="css/calender/js/mobiscroll.javascript.min.js"></script>
 <script>
     var date = new Date();
-    // let date_array = [];
-    var selectedDates = []; 
+   
+var oneMonthAgo = new Date(date);
+oneMonthAgo.setMonth(date.getMonth() - 1);
+
+
+
+var holiday_mark = <?php echo $holiday_mark_json; ?>;
+var date_array = [];
+
+
+
+for (var i = 0; i < holiday_mark.length; i++) {
+    var dateParts = holiday_mark[i].split('-');
+    var year = parseInt(dateParts[0]);
+    var month = parseInt(dateParts[1]) - 1; // Month is 0-based in JavaScript
+    var day = parseInt(dateParts[2]);
+    
+    // Create a JavaScript Date object with the specified year and month, and set the day
+    var jsDate = new Date(year, month, day);
+    date_array.push(jsDate);
+}
+
+
+
+
+
+
+
            
 var dateselect;
-    $('#mdp-demo').multiDatesPicker({
+// var dateselect;
+var datepickerOptions = {
+    minDate: oneMonthAgo, // 0 means today or the current date
+    maxDate: '+1M',
+    onSelect: function(dateText, inst) {
+        var clickedDate = new Date(dateText);
         
-        // preselect the 14th and 19th of the current month
-        	//  addDates: [date.setDate(14), date.setDate(19)],
-          //  addDates: selectedDates,
+        // Toggle the selection of the clicked date
+        $(this).toggleClass('selected');
 
-           onSelect: function(dateText, inst) {
-            var clickedDate = new Date(dateText);
+        // Update the selected dates array
+        updateSelectedDates();
+
+        // Log the updated selected dates
+        console.log('Selected dates:', selectedDates);
+        $('#selected-dates-input').val(JSON.stringify(selectedDates));
+    }
+};
+
+// Check if date_array is not empty and add the addDates option
+if (date_array.length > 0) {
+    datepickerOptions.addDates = date_array;
+}
+
+$('#mdp-demo').multiDatesPicker(datepickerOptions);
+
+function updateSelectedDates() {
+    selectedDates = $('#mdp-demo').multiDatesPicker('getDates');
+}
+    // $('#mdp-demo').multiDatesPicker({
+        
+    //   minDate: oneMonthAgo, // 0 means today or the current date
+    //    maxDate: '+1M',
+    //          addDates: date_array,
+    //        onSelect: function(dateText, inst) {
+    //         var clickedDate = new Date(dateText);
             
-            // Toggle the selection of the clicked date
-            $(this).toggleClass('selected');
+    //         // Toggle the selection of the clicked date
+    //         $(this).toggleClass('selected');
 
-            // Update the selected dates array
-            updateSelectedDates();
+    //         // Update the selected dates array
+    //         updateSelectedDates();
 
-            // Log the updated selected dates
-            console.log('Selected dates:', selectedDates);
-            $('#selected-dates-input').val(JSON.stringify(selectedDates));
-           }
+    //         // Log the updated selected dates
+    //         console.log('Selected dates:', selectedDates);
+    //         $('#selected-dates-input').val(JSON.stringify(selectedDates));
+    //        }
 
 
         	
-    });
-    function updateSelectedDates() {
-        selectedDates = $('#mdp-demo').multiDatesPicker('getDates');
-    }
-    console.log('Initial selected dates:', selectedDates);
+    // });
+    // function updateSelectedDates() {
+    //     selectedDates = $('#mdp-demo').multiDatesPicker('getDates');
+    // }
+    // console.log('Initial selected dates:', selectedDates);
     
     // selectedDates = $('#mdp-demo').multiDatesPicker('getDates');
-             console.log('------------',selectedDates);
+            //  console.log('------------',selectedDates);
     </script>
 </body>
 </html>
