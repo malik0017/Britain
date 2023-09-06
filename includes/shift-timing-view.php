@@ -5,14 +5,14 @@ if (isset($_POST['deleteid'])) {
   //delete From Database
   //$flagmain = $conf->delme( CLASStbl, $deleteid, "id" );
   //delete From Frontened
-  $table = SHIFTTIMING . " set `is_deleted`=1  where id='" . $deleteid . "'";
+  $table = SHIFTTIMING . " set `IsActive`=0  where ShiftID='" . $deleteid . "'";
   $flagmain = $conf->updateValue($table);
   if ($flagmain) {
     $success = "<p>Record  is <strong>Deleted</strong> Successfully</p>";
   }
 }
 // $results = $conf->fetchall(STAFF . " where is_deleted = 0");
-$results = "SELECT * FROM ".SHIFTTIMING." where is_deleted = 0 LIMIT 100";
+$results = "SELECT * FROM ".SHIFTTIMING." where IsActive = 1 ORDER BY ShiftID ASC";
 $results = $conf->QueryRun($results);
 
 ?>
@@ -38,11 +38,14 @@ $results = $conf->QueryRun($results);
                 <table id="tabledata" class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
                   <thead class="btn-warning">
                     <tr>
-                      <!-- <th style="width:10%">Employee id</th> -->
+                      <th style="width:10%">Id</th>
                       <th style="width:10%">Shift Title</th>
                       <th style="width:8%">Start Timing</th>
                       <th style="width:10%">End Timing</th>
-                      
+                      <th style="width:8%">Start Timing 01</th>
+                      <th style="width:10%">End Timing 02</th>
+                      <th style="width:8%">Start Timing 03</th>
+                      <th style="width:10%">End Timing 04</th>
                       <th style="width:1%">View</th>
                       <th style="width:1%">Edit</th>
                       <th style="width:1%">Delete</th>
@@ -56,33 +59,41 @@ $results = $conf->QueryRun($results);
 
                     foreach ($results as $data) {
                     ?>
-                      <tr>
-
-                   
+                      <tr>     
+                      <td>
+                          <?= $data->ShiftID ?>
+                        </td>              
                         <td>
-                          <?= $data->shift_title ?>
-
+                          <?= $data->ShiftName ?>
                         </td>
                         <td>
-                          <?= $data->start_time ?>
-
+                          <?= $data->StartTime ?>
                         </td>
                         <td>
-                          <?= $data->end_time ?>
-
+                          <?= $data->EndTime ?>
                         </td>
-                      
+                        <td>
+                          <?= $data->StartTime1 ?>
+                        </td>
+                        <td>
+                          <?= $data->EndTime1 ?>
+                        </td>
+                        <td>
+                          <?= $data->StartTime2 ?>
+                        </td>
+                        <td>
+                          <?= $data->EndTime2 ?>
+                        </td>
+                        <td>
 
-                        <td class="">
-
-                          <form action="shift-timing-show.php?CD=<?php echo $data->id; ?>" method="post">
+                          <form action="shift-timing-show.php?CD=<?php echo $data->ShiftID; ?>" method="post">
                             <button type="submit" class="btn btn-primary">Show</button>
 
                           </form>
 
                         </td>
                         <td>
-                          <form action="shift-timing-edit.php?CD=<?php echo $data->id; ?>" method="post">
+                          <form action="shift-timing-edit.php?CD=<?php echo $data->ShiftID; ?>" method="post">
 
                             <button type="submit" class="btn btn-primary">Edit</button>
 
@@ -90,7 +101,7 @@ $results = $conf->QueryRun($results);
                         </td>
                         <td>
                           <form action="" method="post">
-                            <input type="hidden" name="deleteid" value="<?php echo $data->id; ?>">
+                            <input type="hidden" name="deleteid" value="<?php echo $data->ShiftID; ?>">
 
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete it?')">Delete</button>
                           </form>

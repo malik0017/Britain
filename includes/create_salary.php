@@ -94,16 +94,11 @@ if (isset($_POST['load'])) {
 	$salaryid=array();
 	$campus = ($_POST['campus']);
 	$month_year = ($_POST['month_year']);
-    $mark_holiday=$conf->getHolidays($month_year);
 	
 	$sm_arr=explode('-',$month_year);
 	
 	$salary_month=$sm_arr[0];
 	$salary_year=$sm_arr[1];
-$shift_timming=$conf->staffShiftTimming();
-	
-	$workingdays=$conf->workingDays($mark_holiday,$salary_month,$salary_year);
-	
 	
 	$datasalary_exits=$conf->SalaryCheCreate($salary_month,$salary_year,$campus);
 	if (!empty($datasalary_exits)) {
@@ -118,7 +113,7 @@ $shift_timming=$conf->staffShiftTimming();
 	//  print_r($results);
 	}
 	else{
-	 $sql = "SELECT s.*, d.employel_type as d_name
+	$sql = "SELECT s.*, d.employel_type as d_name
 	FROM ".STAFF." as s
 	INNER JOIN ".EMPLOYETYE. " as d ON s.employel_type = d.id
 	WHERE s.campus = $campus AND s.IsActive = 1 AND s.IsLeft= 0";
@@ -126,8 +121,7 @@ $shift_timming=$conf->staffShiftTimming();
 	$results = $conf->QueryRun($sql);
 
 	}
-	// print_r($results);
-	// exit;
+	
 
 
 	// $results = $conf->fetchall(STAFF .  " as s INNER JOIN ". DEPARTMENT." as d ON d.id = s.department WHERE campus = $campus  And IsActive=1 ");
@@ -144,6 +138,7 @@ $shift_timming=$conf->staffShiftTimming();
 	$lunch=$_POST['lunch'];
 	
 	$campus=$_POST['campus'];
+	// print_r($campus);
 	$sm_arr=explode('-',$sm_posted);
 	
 	
@@ -160,8 +155,7 @@ $shift_timming=$conf->staffShiftTimming();
 				
 				$advance=$advance[$int];
 				$security=$security[$int];
-				
-		// $numberOfLeave=1;
+		$numberOfLeave=1;
 		$installment_no=0;
 				  $basic_salary=$conf->BasicSalary($data);
 				 
@@ -174,10 +168,8 @@ $shift_timming=$conf->staffShiftTimming();
 				//   exit;
 				 // months pass in this function after 
 				
-				 $numberOfLeave=$conf->countLeave($workingdays,$shift_timming,$data);
-				  $leave_amount=$conf->LeaveAmount($data,$numberOfLeave);
-				  $leavedays=$leave_amount['day'];
-				$leaveamountdeduction=$leave_amount['salary'];
+				
+				  $leave_amount=round($conf->LeaveAmount($data,$numberOfLeave));
 				  $lunch_amount=$conf->LunchAmount($data);
 				  $security_data=$conf->securityCheck($data);
 				  $loans_check=$conf->LoansCheck($data);
@@ -258,13 +250,7 @@ $shift_timming=$conf->staffShiftTimming();
 				// 	$advance=$loans_check;
 				//   }
 				  
-				if($leavedays=='add'){
-					$gross_sal=$basic_salary+$lunch_amount+$leaveamountdeduction;
-
-				 }else{
-					$gross_sal=$basic_salary+$lunch_amount-$leaveamountdeduction;
-				 }
-				  
+				  $gross_sal=$basic_salary+$lunch_amount+(int)$other-$leave_amount;
   
 				$staff_kids=$conf->KidsStaff($data);
 				// $income_tax=$conf->IncomeTax($gross_sal);
@@ -277,7 +263,13 @@ $shift_timming=$conf->staffShiftTimming();
 				// $loans_check=$conf->LoansCheck($data);
 				$net_salary= $gross_sal - (int)$advance - (int)$pfunds - (int)$income_tax - (int)$security;
 				// echo "====".$net_salary."<br>";
-				$data_post = array( 'emp_id' => $data, 'leaves' =>$leavedays ,'campus_id' =>$data->campus,'basic_salary' => $basic_salary,'net_salary' => $net_salary,'d_loan' => $advance,'d_leave_amount' => $leaveamountdeduction,'a_lunch' => $lunch_amount,'free_kids' => $staff_kids,'d_income_tax' => $income_tax,'d_security' => $security,'d_provident_funds' => $pfunds,'installment_no' => $installment_no,'user_id' => $_SESSION[ 'user_reg' ],'salary_month' => $salary_month,'salary_year' => $salary_year,'other_allowance' => $other,'created_at' => $_SESSION['cDate'],'updated_at' => $_SESSION['cDate']);
+				$data_post = array( 
+				'emp_id' => $data, 'leaves' =>$numberOfLeave ,'campus_id' =>$campus,
+				'basic_salary' => $basic_salary,'net_salary' => $net_salary,'d_loan' => $advance,'d_leave_amount' => $leave_amount,
+				'a_lunch' => $lunch_amount,'free_kids' => $staff_kids,'d_income_tax' => $income_tax,'d_security' => $security,
+				'd_provident_funds' => $pfunds,'installment_no' => $installment_no,'user_id' => $_SESSION[ 'user_reg' ],
+				'salary_month' => $salary_month,'salary_year' => $salary_year,'other_allowance' => $other,
+				'created_at' => $_SESSION['cDate'],'updated_at' => $_SESSION['cDate']);
 
 				$recodes = $conf->insert( $data_post, STAFFSALARY );
 				$table = STAFF . " set `basic_salary`='" . $basic_salary . "' where employel_id='" . $data . "'";
@@ -289,8 +281,7 @@ $shift_timming=$conf->staffShiftTimming();
 				
 				
 
-				$conf->FundsEntry(PROVIDENTFUNDS,$description, $pfunds, $data, 'cr',0,1, $date, $vno);
-				
+				$conf->FundsEntry(PROVIDENTFUNDS,$description, $pfunds, $data, 'cr',0,1, $date, $vno);				
 				 
 	}
 	
@@ -356,25 +347,25 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
 				  <div class="form-group">
 					<label for="addmission_no">Salary Month:</label>
 					<select class="form-select form-control" name="month_year" id="month_year">
-    <?php
-    $currentYear ='2022';
-    $currentMonth = '2';
-	// $currentYear = date("Y");
-    // $currentMonth = date("n");
-	$selectedValue = $month_year;
-	
-    for ($year = $currentYear; $year <= ($currentYear + 10); $year++) {
-        $startMonth = ($year === $currentYear) ? $currentMonth : 1;
-        
-        for ($month = $startMonth; $month <= 12; $month++) {
-            $monthName = date("F", mktime(0, 0, 0, $month, 1));
-            $optionValue = "$month-$year";
-			$selectedAttribute = ($optionValue === $selectedValue) ? 'selected' : '';
-            echo "<option value='$optionValue'$selectedAttribute>$monthName $year</option>";
-        }
-    }
-    ?>
-</select>
+					<?php
+					$currentYear ='2022';
+					$currentMonth = '2';
+					// $currentYear = date("Y");
+					// $currentMonth = date("n");
+					$selectedValue = $month_year;
+					
+					for ($year = $currentYear; $year <= ($currentYear + 10); $year++) {
+						$startMonth = ($year === $currentYear) ? $currentMonth : 1;
+						
+						for ($month = $startMonth; $month <= 12; $month++) {
+							$monthName = date("F", mktime(0, 0, 0, $month, 1));
+							$optionValue = "$month-$year";
+							$selectedAttribute = ($optionValue === $selectedValue) ? 'selected' : '';
+							echo "<option value='$optionValue'$selectedAttribute>$monthName $year</option>";
+						}
+					}
+					?>
+				</select>
 
 				  </div>
 				</div>
@@ -393,8 +384,8 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
 				  </div>
 				</div>
 
-</div>
-</form>
+				</div>
+			</form>
 <form name="" method="POST">
 
 				<div class="table-container">
@@ -433,24 +424,13 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
 				$int=0;
 				foreach( $results as $key => $data){
 					$int++;
-					// $numberOfLeave=1;
-					
+					$numberOfLeave=1;
 				  $basic_salary=$conf->BasicSalary($data->employel_id);
 				 // months pass in this function after 
-				 $numberOfLeave=$conf->countLeave($workingdays,$shift_timming,$data->employel_id);
-				 $leave_amount=$conf->LeaveAmount($data->employel_id,$numberOfLeave);
-				 $leavedays=$leave_amount['day'];
-				 $leaveamountdeduction=$leave_amount['salary'];
-				 if($leavedays=='add'){
-					$gross_sal=intval($basic_salary)+intval($lunch_amount)+intval($leaveamountdeduction);
-
-				 }else{
-					$gross_sal=intval($basic_salary)+intval($lunch_amount)-intval($leaveamountdeduction);
-				 }
-
+				  $leave_amount=round($conf->LeaveAmount($data->employel_id,$numberOfLeave));
 				  $lunch_amount=$conf->LunchAmount($data->employel_id);
 			
-				 
+				  $gross_sal=$basic_salary+$lunch_amount-$leave_amount;
   
 				$staff_kids=$conf->KidsStaff($data->employel_id);
 				$income_tax=$conf->IncomeTax($gross_sal);
@@ -459,7 +439,7 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
 				$loans_check=$conf->LoansCheck($data->employel_id);
 				
 				$loans_remaining=$conf->currentBalance(LOANFUNDS, $data->employel_id);
-				$net_salary= $gross_sal - $security_data - $pfunds - $income_tax -$loans_check;
+				$net_salary= $gross_sal - $security_data['total'] - $pfunds - $income_tax -$loans_check;
 
 				
 				?>
@@ -472,15 +452,15 @@ $campus_name=$conf->fetchall( CAMPUStbl . " WHERE is_deleted=0" );
                         <td><input type="text"  id="incomebonus_<?php echo $int; ?>"class="changesNo"value="<?php echo "0"; ?>" name="income_bonus[]" >  </td>
 						<td> <span class="basic_salary_<?php echo $int; ?>" default="<?php echo  $basic_salary; ?>"><?php echo  $basic_salary; ?></span> </td>
                         <td><span class="c_month_remark_<?php echo $int; ?>">Allow</span> </td>
-						<td> <span class="day_<?php echo $int; ?>"><?php echo  $leavedays; ?></span>  </td>
-                        <td>  <span class="leaves_<?php echo $int; ?>"><?php echo  $leaveamountdeduction; ?></span></td>
+						<td> <span class="day_<?php echo $int; ?>"><?php echo  $numberOfLeave; ?></span>  </td>
+                        <td>  <span class="leaves_<?php echo $int; ?>"><?php echo  $leave_amount; ?></span></td>
 						<td> <input type="text"  id="lunch_<?php echo $int; ?>"class="changesNo" value="<?php echo $lunch_amount; ?>" name="lunch[]" >  </td>
                         <td> <span class="day_<?php echo $int; ?>"><?php echo  $staff_kids; ?></span>  </td>  </td>
 						<td> <input type="text"  id="other_<?php echo  $int; ?>"class="changesNo other" value="" name="other[]" > </td>
                         <td> <span class="gross_salary_<?php echo $int; ?>"><?php echo  $gross_sal; ?></span> </td>
 						<td>  <span class="income_tax_<?php echo $int; ?>"><?php echo  $income_tax; ?></span></td>
                         <td>  <input type="text"  id="security_<?php echo $int; ?>"class="changesNo" value="<?php echo $security_data; ?>" name="security[]" ></td>
-						<td>  <span id="p_funds_<?php echo $int; ?>" class="p_funds_<?php echo $int; ?>"><?php echo  $pfunds; ?></span></td>
+						<td>  <span class="p_funds_<?php echo $int; ?>"><?php echo  $pfunds; ?></span></td>
                         <td> <input type="text"  id="advance_<?php echo $int; ?>"class="changesNo" value="<?php echo $loans_check; ?>" name="advance[]" >  </td>
 						<td> <span class="advance_balance_<?php echo $int; ?>"><?php echo  $loans_remaining; ?></span> </td>
 						<td> <span class="net_balance_<?php echo $int; ?>"><?php echo  $net_salary; ?></span> </td>

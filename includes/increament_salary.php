@@ -42,11 +42,7 @@ if (isset($_POST['load'])) {
 				  }else{
 					$basic_salary=$pre_basic_salary;
 				  }
-				
-				
-				
-				 
-		
+	
 
 					$data_post = array( 'emp_id' => $data, 'pre_salary' =>$pre_basic_salary ,'increament_amount' =>$income_bonus,'new_salary' => $basic_salary,'campus_id' => $campus,'date' =>$_SESSION['cDate'],'user_id' => $_SESSION[ 'user_reg' ],'created_at' => $_SESSION['cDate']);
 

@@ -39,7 +39,9 @@ define("FEEVOUCHER", "fee_voucher");
 define("FEEVOUCHERDETAIL", "fee-voucher-detail");
 
 define("STAFFSALARY", "staff_salary");
-define("SHIFTS", "shifts")   ;
+
+define("STAFF_TRANSFER", "staff_transfer");
+define("SHIFTTIMING", "shifts")   ;
 
 define("SALARYFUNDS", "tbl_salary_funds");
 
