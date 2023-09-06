@@ -123,6 +123,7 @@
       <li class="nav-item"><a href="staff-campus-transfer-report" class="nav-link">Staff Transfer Report</a></li>
       <li class="nav-item"><a href="increament-salary-report" class="nav-link">Increament Salary Report</a></li>
       <li class="nav-item"><a href="salary-month-report" class="nav-link mb-2">Monthly Salary Report</a></li>
+      <li class="nav-item"><a href="salary-yearly-report" class="nav-link mb-2">Monthly Yearly Report</a></li>
 
             </ul>
            </li>

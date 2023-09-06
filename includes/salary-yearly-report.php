@@ -5,27 +5,29 @@
 
 
 
+
 $campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
 
 
-
-if (isset($_POST['search_by_campus'])) {
+if (isset($_POST['submit'])) {
 
    
-  $campus_id = $_POST['campus'];
-  $month_year = ($_POST['month_year']);
-	
-	$sm_arr=explode('-',$month_year);
-	
-	$salary_month=$sm_arr[0];
-	$salary_year=$sm_arr[1];
+  $campusId = $_POST['campus'];
+  $staffId = $_POST['staff_id'];
+  $startDate = $_POST['start_date'];
+  $end_date = $_POST['end_date'];
+
+
+ 
 
   $sql_query = "SELECT sf.*,s.employel_name as employel_name, d.employel_type as d_name 
   FROM ".STAFFSALARY." as sf
   INNER JOIN ".STAFF." AS s ON s.employel_id = sf.emp_id
   INNER JOIN ".EMPLOYETYE. " as d ON s.employel_type = d.id
-  where sf.is_deleted = 0 &&  sf.campus_id = $campus_id && sf.salary_month= $salary_month";
-// echo"<br>";
+  WHERE DATE(sf.created_at) BETWEEN '" . $startDate . "' AND '" . $end_date . 
+  "' AND emp_id=" . $staffId . " order by id ASC";
+
+
   $results = $conf->QueryRun($sql_query);
   // print_r($results);
 
@@ -46,52 +48,47 @@ if (isset($_POST['search_by_campus'])) {
 
             <div class="card center1">
                           
-                <form name="post" action="" method="post">
-                  <div class="row py-3 ml-4">
-                  
-                    <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
-
+            <form action=" " method="POST" enctype="multipart/form-data">
+                  <div class="row">
+                    <div class="col-lg-2 col-md-4 col-sm-6">
                       <div class="form-group">
-                        <label for="campus" class="form-label ">Campus</label>
-                        <select class="form-select form-control" id="campus" tabindex="1" name="campus">
+                        <label for="campus" class="form-label">Campus</label>
+                        <select class="form-select form-control campus" id="campus" tabindex="6" name="campus" required>
                           <?php foreach ($campus_name as $data) { ?>
                             <option value="<?php echo $data->id; ?>"><?php echo $data->campus_name; ?></option>
-                          <?php  } ?>
+                          <?php } ?>
                         </select>
                       </div>
                     </div>
-                    
-					<div class="col-lg-4 col-md-4 col-sm-6">
-					<div class="form-group">
-						<label for="addmission_no">Salary Month:</label>
-						<select class="form-select form-control" name="month_year" id="month_year">
-							<?php
-							$currentYear ='2022';
-							$currentMonth = '2';
-							// $currentYear = date("Y");
-							// $currentMonth = date("n");
-							$selectedValue = $month_year;
 
-							for ($year = $currentYear; $year <= ($currentYear + 10); $year++) {
-							$startMonth = ($year === $currentYear) ? $currentMonth : 1;
-
-							for ($month = $startMonth; $month <= 12; $month++) {
-							$monthName = date("F", mktime(0, 0, 0, $month, 1));
-							$optionValue = "$month-$year";
-							$selectedAttribute = ($optionValue === $selectedValue) ? 'selected' : '';
-							echo "<option value='$optionValue'$selectedAttribute>$monthName $year</option>";
-							}
-							}
-							?>
-				</select>
-
-					</div>
-					</div>
-                    <div class="text-center my-auto mt-5">
-                              <input type="submit" name="search_by_campus" value="Search" class="btn btn-warning " tabindex="8"/>
+                    <div id="staffkid" class="col-lg-2 col-md-4 col-sm-6">
+                      <div class="form-group">
+                        <label for="staff_id" class="form-label">Staff</label>
+                        <select class="form-select form-control" id="staff_id" tabindex="42" name="staff_id">
+                          <!-- Staff options will be dynamically populated here -->
+                        </select>
                       </div>
-                  </div>
-                      </form>
+                    </div>
+                    <div id="expirydate" class="col-lg-2 col-md-4 col-sm-6">
+                      <div class="form-group">
+                        <label for="start_date">start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" tabindex="18" placeholder="">
+                      </div>
+                    </div>
+
+                    <div id="expirydate" class="col-lg-2 col-md-4 col-sm-6">
+                      <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" tabindex="18" placeholder="">
+                      </div>
+                    </div>
+
+                      <div class="text-center mt-4 pt-2">
+                        <label></label>
+                        <input type="submit" name="submit" value="Submit" class="btn btn-warning " tabindex="47" />
+                      </div>
+                      </div>
+                  </form>
                    
                    
 
