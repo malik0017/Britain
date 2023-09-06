@@ -144,9 +144,8 @@
 
       <li class="nav-item"><a href="increament-salary-report" class="nav-link">Increament Salary Report</a></li>
       <li class="nav-item"><a href="salary-month-report" class="nav-link mb-2">Monthly Salary Report</a></li>
-      <li class="nav-item"><a href="holiday_report" class="nav-link">Holidays Report</a></li>
-
-
+               <li class="nav-item"><a href="salary-yearly-report" class="nav-link mb-2">Yearly Report</a></li>
+              <li class="nav-item"><a href="holiday_report" class="nav-link">Holidays Report</a></li>
 
             </ul>
            </li>

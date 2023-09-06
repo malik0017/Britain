@@ -6,13 +6,14 @@ if (isset($_POST['deleteid'])) {
   //$flagmain = $conf->delme( CLASStbl, $deleteid, "id" );
   //delete From Frontened
   $table = STAFF . " set `is_deleted`=1  where id='" . $deleteid . "'";
+  
   $flagmain = $conf->updateValue($table);
   if ($flagmain) {
     $success = "<p>Record  is <strong>Deleted</strong> Successfully</p>";
   }
 }
 // $results = $conf->fetchall(STAFF . " where is_deleted = 0");
-$results = "SELECT * FROM ".STAFF." where is_deleted = 0 && IsLeft= 0  LIMIT 100 ";
+$results = "SELECT * FROM ".STAFF." where is_deleted = 0 && IsLeft= 1  LIMIT 100 ";
 $results = $conf->QueryRun($results);
 
 $campus_name = $conf->fetchall(CAMPUStbl . " WHERE is_deleted=0");
@@ -54,9 +55,9 @@ if (isset($_POST['submit'])) {
                   <a class="btn btn-warning float-right" href="staff-add.php"> Create New Staff</a>
                 </div> -->
                 <div class="row mb-2">
-          <div class="col-sm-6">
+          <!-- <div class="col-sm-6">
             <h1 class="m-0">Staff Deactive </h1>
-          </div>
+          </div> -->
           <div class="col-sm-6">            
           </div>
         </div>
@@ -98,9 +99,9 @@ if (isset($_POST['submit'])) {
               <!-- /.card-header -->
               <div class="card-body">
               <div class="row mb-2">
-          <div class="col-sm-6">
+          <!-- <div class="col-sm-6">
             <h1 class="m-0">Active Staff </h1>
-          </div>
+          </div> -->
           <div class="col-sm-6">            
           </div>
         </div>
@@ -113,7 +114,7 @@ if (isset($_POST['submit'])) {
                       <th style="width:10%">Gender</th>
                       <th style="width:5%">Contact</th>
                       
-                      <th style="width:8%">Father Contact</th>
+                      <th style="width:8%">Status</th>
 
 
 
@@ -154,10 +155,11 @@ if (isset($_POST['submit'])) {
                           <?= $data->contact ?>
 
                         </td>
-                        <td>
-                          <?= $data->father_contact ?>
+                        <!-- <td>
+                          <?= $data->IsLeft ?>
 
-                        </td>
+                        </td> -->
+                        <td><?= ($data->IsLeft == 1) ? 'Deactive' : ($data->IsLeft == 0 ? 'Active' : 'Other value') ?></td>
 
 
                       
